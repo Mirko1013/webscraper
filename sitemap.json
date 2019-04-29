@@ -1,0 +1,40 @@
+{
+  "_id": "test",
+  "startUrl": [
+    "https://www.webscraper.io/test-sites/e-commerce/allinone"
+  ],
+  "selectors": [
+    {
+      "id": "description",
+      "type": "SelectorText",
+      "parentSelectors": [
+        "product"
+      ],
+      "selector": "p.description",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "name",
+      "type": "SelectorText",
+      "parentSelectors": [
+        "product"
+      ],
+      "selector": "a.title",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "product",
+      "type": "SelectorElement",
+      "parentSelectors": [
+        "_root"
+      ],
+      "selector": "div.thumbnail",
+      "multiple": true,
+      "delay": 0
+    }
+  ]
+}
