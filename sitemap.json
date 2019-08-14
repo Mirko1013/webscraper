@@ -7,10 +7,10 @@
     {
       "id": "description",
       "type": "SelectorText",
-      "parentSelectors": [
+      "parent_selectors": [
         "product"
       ],
-      "selector": "p.description",
+      "css_paths": "p.description",
       "multiple": false,
       "regex": "",
       "delay": 0
@@ -18,10 +18,10 @@
     {
       "id": "name",
       "type": "SelectorText",
-      "parentSelectors": [
+      "parent_selectors": [
         "product"
       ],
-      "selector": "a.title",
+      "css_paths": "a.title",
       "multiple": false,
       "regex": "",
       "delay": 0
@@ -29,10 +29,10 @@
     {
       "id": "product",
       "type": "SelectorElement",
-      "parentSelectors": [
+      "parent_selectors": [
         "_root"
       ],
-      "selector": "div.thumbnail",
+      "css_paths": "div.thumbnail",
       "multiple": true,
       "delay": 0
     }

@@ -1,0 +1,39 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# @Time    : 2019/4/17 9:10 AM
+# @Author  : mirko
+# @FileName: TextSelector.py
+# @Software: PyCharm
+
+from . import RegisterSelectorType, Selector
+
+
+@RegisterSelectorType("SelectorText")
+class TextSelector(Selector):
+
+    can_return_multiple_records = True
+    can_have_child_selectors = False
+    can_have_local_child_selectors = False
+    can_create_new_jobs = False
+    can_return_elements = False
+
+    features = {
+        'multiple': False,
+        'delay': 0,
+        'regex': ''
+    }
+
+    def __init__(self, id, type, css_paths, parent_selectors, multiple, delay, regex, **kwargs):
+        super(TextSelector, self).__init__(id, type, css_paths, parent_selectors)
+        self.multiple = multiple
+        self.delay = delay
+        self.regex = regex
+
+    @classmethod
+    def get_features(cls):
+        base_features = Selector.get_features()
+        base_features.update(cls.features)
+        return base_features
+
+    def will_return_multiple_records(self):
+        return self.can_return_multiple_records and self.multiple
