@@ -25,3 +25,6 @@ class ChromeBrowser(object):
                 if not hasattr(ChromeBrowser, "_instance"):
                     ChromeBrowser._instance = object.__new__(cls)
         return ChromeBrowser._instance
+
+
+    def fetchData(self, url, sitemap, parentSelectorId):

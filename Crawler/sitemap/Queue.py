@@ -14,16 +14,23 @@ class TaskQueue(object):
     def __init__(self):
         self.queue = Queue()
 
-
-
     def add(self, job):
-        pass
+        #TODO 维护一个全局缓存，采用redis实现的SimHash算法或BloomFilter算法进行过滤
 
-    def canBeAdded(self, job):
 
+        if not self.queue.full():
+            self.queue.put(job, block=False)
+            #TODO 设置已经抓取的tag
+            return True
+        else:
+            return False
 
     def getTaskQueueSize(self):
         return self.queue.qsize()
 
 
-
+    def getNextJob(self):
+        if not self.queue.empty():
+            return self.queue.get(block=False)
+        else:
+            return False
