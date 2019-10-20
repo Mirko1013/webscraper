@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 import json
-from Crawler.sitemap import Sitemap
+from WebScraper.WebScraper import Sitemap
 
 
 
@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     sitemap_json = str()
 
-    with open("sitemap.json", encoding="utf-8") as f:
+    with open("WebScraper.json", encoding="utf-8") as f:
         sitemap_json = json.load(f)
 
     sitemap = Sitemap(sitemap_json.get("_id"), sitemap_json.get("startUrl"), sitemap_json.get("selectors"))

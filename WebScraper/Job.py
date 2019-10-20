@@ -7,13 +7,13 @@
 
 class Job(object):
 
-    def __init__(self, url, parentSelector, scraper, parentJob, baseData):
-        if not parentJob:
+    def __init__(self, url, parentSelectorId, scraper, parentJob, baseData):
+        if parentJob:
             self.url = parentJob.url + url
         else:
             self.url = url
 
-        self.parentSelector = parentSelector
+        self.parentSelectorId = parentSelectorId
         self.scraper = scraper
         self.dataItems = list()
         self.baseData = baseData if baseData else dict()
@@ -21,7 +21,9 @@ class Job(object):
 
     def execute(self, browser):
         sitemap = self.scraper.sitemap
-        results = browser.fetchData(self.url, sitemap, self.parentSelector)
+        results = browser.fetchData(self.url, sitemap, self.parentSelectorId)
+
+        #TODO 对results进行处理，合并入dataItems
 
     def getResults(self):
         return self.dataItems

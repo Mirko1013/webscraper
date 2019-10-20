@@ -28,3 +28,4 @@ class ChromeBrowser(object):
 
 
     def fetchData(self, url, sitemap, parentSelectorId):
+        pass

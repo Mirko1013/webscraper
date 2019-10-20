@@ -5,10 +5,10 @@
 # @FileName: ChromeBrowser.py
 # @Software: PyCharm
 
-from Crawler.sitemap.ChromeBrowser import ChromeBrowser
+from WebScraper.WebScraper import ChromeBrowser
 
 if __name__ == '__main__':
-    path = r"D:\PycharmProjects\baijia\Crawler\chromedirver\chromedriver.exe"
+    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
     a = ChromeBrowser(path, None)
     a.browser.get("http://www.baidu.com")
     import time

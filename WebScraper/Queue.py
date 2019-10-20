@@ -29,6 +29,9 @@ class TaskQueue(object):
         return self.queue.qsize()
 
 
+    def isFull(self):
+        return True if self.queue.full() else False
+
     def getNextJob(self):
         if not self.queue.empty():
             return self.queue.get(block=False)
