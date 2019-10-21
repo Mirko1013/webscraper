@@ -18,7 +18,7 @@ class TaskQueue(object):
         #TODO 维护一个全局缓存，采用redis实现的SimHash算法或BloomFilter算法进行过滤
 
 
-        if not self.queue.full():
+        if not self.isFull():
             self.queue.put(job, block=False)
             #TODO 设置已经抓取的tag
             return True
