@@ -6,8 +6,13 @@
 # @Software: PyCharm
 
 from selenium import webdriver
-import threading
+from WebScraper.JsUtils import *
+from WebScraper.DataExtractor import DataExtractor
 
+import threading
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ChromeBrowser(object):
 
@@ -27,5 +32,14 @@ class ChromeBrowser(object):
         return ChromeBrowser._instance
 
 
+    def loadUrl(self, url):
+        logger.info("Start to load url: {0}".format(url))
+        self.browser.execute_script(WINDOW_OPEN.format(url, '_self'))
+
+
     def fetchData(self, url, sitemap, parentSelectorId):
-        pass
+
+        self.loadUrl(url=url)
+
+        dataExtractor = DataExtractor(self, sitemap, parentSelectorId)
+        results = dataExtractor.getData()

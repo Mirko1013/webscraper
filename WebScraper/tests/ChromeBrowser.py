@@ -5,12 +5,12 @@
 # @FileName: ChromeBrowser.py
 # @Software: PyCharm
 
-from WebScraper.WebScraper import ChromeBrowser
+from WebScraper.ChromeBrowser import ChromeBrowser
 
 if __name__ == '__main__':
-    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
     a = ChromeBrowser(path, None)
-    a.browser.get("http://www.baidu.com")
+    a.fetchData("http://www.baidu.com", None, None)
     import time
     time.sleep(5)
     a.quit()
