@@ -10,8 +10,10 @@ from WebScraper.selector.TextSelector import TextSelector
 from WebScraper.selector.LinkSelector import LinkSelector
 from WebScraper.selector.ElementSelector import ElementSelector
 
-
+import logging
 import json
+
+logger = logging.getLogger(__name__)
 
 class Sitemap(object):
 
@@ -23,20 +25,27 @@ class Sitemap(object):
 
     def getSelectorById(self, selectorId):
 
-        def _recursiveFind(targetId, selector, visitedSelectors):
+        resultSelector = None
+
+        def _recursiveFind(targetId, selector, visitedSelectors, targetSelector):
             curSelectorId = selector.__getattribute__("id")
 
             if targetId == curSelectorId:
-                return selector
+                targetSelector = selector
+                return
+
+            visitedSelectors.append(curSelectorId)
 
             if len(selector.children) == 0 or curSelectorId in visitedSelectors:
                 return
-            else:
-                visitedSelectors.append(curSelectorId)
-                for childSelector in selector.children:
-                    _recursiveFind(targetId, childSelector, visitedSelectors)
 
-        return _recursiveFind(selectorId, self.selectors, list())
+            for childSelector in selector.children:
+                _recursiveFind(targetId, childSelector, visitedSelectors, targetSelector)
+
+        _recursiveFind(selectorId, self.selectors, list(), resultSelector)
+
+        print(resultSelector)
+        return resultSelector
 
     def getDirectChildSelectors(self, parentSelectorId):
         parentSelector = self.getSelectorById(parentSelectorId)

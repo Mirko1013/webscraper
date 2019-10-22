@@ -5,6 +5,8 @@
 # @FileName: Scraper.py
 # @Software: PyCharm
 
+from copy import deepcopy
+
 class DataExtractor(object):
 
     def __init__(self, browser, sitemap, parentSelectorId, *args, **kwargs):
@@ -17,22 +19,28 @@ class DataExtractor(object):
 
 
     def __recursiveFindSelectorTrees(self, parentSelectorId, commonSelectorsFromParent):
-        commonSelectors = commonSelectorsFromParent.extend(self.findAllCommonSelectors(parentSelectorId))
 
+        commonSelectors = commonSelectorsFromParent.copy()
+        commonSelectors.extend(self.findAllCommonSelectors(parentSelectorId))
+        #commonSelectors = commonSelectorsFromParent.copy().extend(self.findAllCommonSelectors(parentSelectorId))
+        #print(parentSelectorId, self.findAllCommonSelectors(parentSelectorId), commonSelectorsFromParent, commonSelectors)
         selectorTrees = list()
 
         directChildSelectors = self.sitemap.getDirectChildSelectors(parentSelectorId)
         for childSelector in directChildSelectors:
             if not self.sitemap.isCommonSelector(childSelector):
+                print(childSelector.__getattribute__("id"))
                 if not childSelector.can_have_local_child(): #link等需要在新页面打开的导航节点
-                    newSelectorTree = commonSelectors.copy().extend(childSelector)
+                    newSelectorTree = commonSelectors.copy()
+                    newSelectorTree.append(childSelector)
                     selectorTrees.append(newSelectorTree)
                 else:  #element等内容封装节点
-                    commonSelectorsFromParent = commonSelectors.copy().expand(childSelector)
+                    commonSelectorsFromParent = commonSelectors.copy()
+                    commonSelectorsFromParent.append(childSelector)
                     childSelectorTrees = self.__recursiveFindSelectorTrees(childSelector.__getattribute__("id"), commonSelectorsFromParent)
                     selectorTrees.append(childSelectorTrees)
 
-        if len(slectorTrees) == 0:
+        if len(selectorTrees) == 0:
             return list(commonSelectors)
         else:
             return selectorTrees
