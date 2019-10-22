@@ -6,6 +6,7 @@
 # @Software: PyCharm
 
 
+
 class RegisterSelectorType(object):
 
     selector_type = {}
@@ -40,7 +41,9 @@ class SelectorFactory(object):
         :param _json_selectors:
         :return: 各种selector实例组成的selector tree,根节点为root
         """
-        root_selector = Selector('_root', None, None, None)
+        #root_selector = Selector('_root', 'SelectorElement', None, None)
+
+        root_selector = SelectorFactory.create_selector("SelectorElement").from_settings({"multiple": False, "id": "_root"})
 
         def build(p_selector, selectors, created_selector):
             parent_selector_id = p_selector.id   #拿到父节点的id
@@ -126,6 +129,10 @@ class Selector(object):
 
     def will_return_multiple_records(self):
         raise NotImplementedError()
+
+    def can_have_local_child(self):
+        raise NotImplementedError()
+
 
     def get_data(self):
         pass

@@ -28,7 +28,7 @@ class Scraper(object):
 
         rootJob = Job(url=startUrl, parentSelectorId="_root", scraper=self, parentJob=None, baseData=None)
 
-        if self.queue.isFull():
+        if not self.queue.isFull():
             self.queue.add(rootJob)
         else:
             raise RuntimeError("任务队列异常，Scraper初始化终止.")

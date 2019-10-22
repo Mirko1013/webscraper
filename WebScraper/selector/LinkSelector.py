@@ -8,7 +8,7 @@
 from . import RegisterSelectorType, Selector
 
 
-@RegisterSelectorType("LinkSelector")
+@RegisterSelectorType("SelectorLink")
 class LinkSelector(Selector):
 
     can_return_multiple_records = True

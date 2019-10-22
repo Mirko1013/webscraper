@@ -1,0 +1,70 @@
+{
+  "startUrl": "https://www.webscraper.io/test-sites/e-commerce/static",
+  "selectors": [
+    {
+      "parent_selectors": [
+        "_root"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "title",
+      "css_paths": "div.jumbotron h1",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "_root"
+      ],
+      "type": "SelectorElement",
+      "multiple": true,
+      "id": "items",
+      "css_paths": "div.thumbnail",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "items"
+      ],
+      "type": "SelectorLink",
+      "multiple": false,
+      "id": "link",
+      "css_paths": "a.title",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "link"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "price",
+      "css_paths": "h4.pull-right",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "link"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "reviews",
+      "css_paths": "div.ratings p",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "link"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "intro",
+      "css_paths": "p.description",
+      "regex": "",
+      "delay": ""
+    }
+  ],
+  "_id": "testlink"
+}

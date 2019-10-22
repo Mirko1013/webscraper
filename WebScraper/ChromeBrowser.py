@@ -19,8 +19,8 @@ class ChromeBrowser(object):
     _instance_lock = threading.Lock()
 
     def __init__(self, path, options, **kwargs):
-        self.browser = webdriver.Chrome(executable_path=path, chrome_options=options)
-
+        #self.browser = webdriver.Chrome(executable_path=path, chrome_options=options)
+        pass
     def quit(self):
         self.browser.quit()
 
@@ -39,7 +39,7 @@ class ChromeBrowser(object):
 
     def fetchData(self, url, sitemap, parentSelectorId):
 
-        self.loadUrl(url=url)
+        #self.loadUrl(url=url)
 
         dataExtractor = DataExtractor(self, sitemap, parentSelectorId)
         results = dataExtractor.getData()
