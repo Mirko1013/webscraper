@@ -130,9 +130,6 @@ class Selector(object):
     def will_return_multiple_records(self):
         raise NotImplementedError()
 
-    def can_have_local_child(self):
-        raise NotImplementedError()
-
 
     def get_data(self):
         pass

@@ -25,27 +25,27 @@ class Sitemap(object):
 
     def getSelectorById(self, selectorId):
 
-        resultSelector = None
+        def _recursiveFind(targetId, selector, visitedSelectors):
 
-        def _recursiveFind(targetId, selector, visitedSelectors, targetSelector):
+            if not selector:
+                return None
+
             curSelectorId = selector.__getattribute__("id")
 
             if targetId == curSelectorId:
-                targetSelector = selector
-                return
+                return selector
+
+            if curSelectorId in visitedSelectors:
+                return None
 
             visitedSelectors.append(curSelectorId)
 
-            if len(selector.children) == 0 or curSelectorId in visitedSelectors:
-                return
-
             for childSelector in selector.children:
-                _recursiveFind(targetId, childSelector, visitedSelectors, targetSelector)
+                if _recursiveFind(targetId, childSelector, visitedSelectors):
+                    return _recursiveFind(targetId, childSelector, visitedSelectors)
 
-        _recursiveFind(selectorId, self.selectors, list(), resultSelector)
+        return _recursiveFind(selectorId, self.selectors, list())
 
-        print(resultSelector)
-        return resultSelector
 
     def getDirectChildSelectors(self, parentSelectorId):
         parentSelector = self.getSelectorById(parentSelectorId)
@@ -61,12 +61,13 @@ class Sitemap(object):
 
         def _recursiveFind(selector, visitedSelectors):
 
-            if len(selector.children) == 0 or selector.__getattribute__("id") in visitedSelectors:
+            if not selector or selector.__getattribute__("id") in visitedSelectors:
                 return
 
+            childSelectors.append(selector)
+            visitedSelectors.append(selector.__getattribute__("id") )
+
             for childSelector in selector.children:
-                childSelectors.append(childSelector)
-                visitedSelectors.append(childSelector.__getattribute__("id"))
                 _recursiveFind(childSelector, visitedSelectors)
 
 
@@ -85,10 +86,10 @@ class Sitemap(object):
 
             tag = True
 
-            if len(selector.children) > 0:
-                for childSelector in selector.children:
-                    _recursiveFind(childSelector, visitedSelectors)
-                    tag = tag & childSelector.__getattribute__("common")
+
+            for childSelector in selector.children:
+                _recursiveFind(childSelector, visitedSelectors)
+                tag = tag & childSelector.__getattribute__("common")
 
 
             if selector.will_return_multiple_records():

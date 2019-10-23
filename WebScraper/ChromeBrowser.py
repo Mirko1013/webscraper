@@ -39,7 +39,9 @@ class ChromeBrowser(object):
 
     def fetchData(self, url, sitemap, parentSelectorId):
 
-        #self.loadUrl(url=url)
+        self.loadUrl(url=url)
+        #对当前请求进行封装
 
-        dataExtractor = DataExtractor(self, sitemap, parentSelectorId)
+
+        dataExtractor = DataExtractor(self, sitemap, parentSelectorId, response)
         results = dataExtractor.getData()

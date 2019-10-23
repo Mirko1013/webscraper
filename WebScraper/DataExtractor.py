@@ -9,10 +9,12 @@ from copy import deepcopy
 
 class DataExtractor(object):
 
-    def __init__(self, browser, sitemap, parentSelectorId, *args, **kwargs):
+    def __init__(self, browser, sitemap, parentSelectorId, parentElement,*args, **kwargs):
         self.browser = browser
         self.sitemap = sitemap
         self.parentSelectorId = parentSelectorId
+        self.parentElement = parentElement
+
 
     def generateSelectorTrees(self):
         return self.__recursiveFindSelectorTrees(self.parentSelectorId, list())
@@ -22,15 +24,13 @@ class DataExtractor(object):
 
         commonSelectors = commonSelectorsFromParent.copy()
         commonSelectors.extend(self.findAllCommonSelectors(parentSelectorId))
-        #commonSelectors = commonSelectorsFromParent.copy().extend(self.findAllCommonSelectors(parentSelectorId))
-        #print(parentSelectorId, self.findAllCommonSelectors(parentSelectorId), commonSelectorsFromParent, commonSelectors)
+
         selectorTrees = list()
 
         directChildSelectors = self.sitemap.getDirectChildSelectors(parentSelectorId)
         for childSelector in directChildSelectors:
             if not self.sitemap.isCommonSelector(childSelector):
-                print(childSelector.__getattribute__("id"))
-                if not childSelector.can_have_local_child(): #link等需要在新页面打开的导航节点
+                if not childSelector.can_have_local_child_selectors: #link等需要在新页面打开的导航节点
                     newSelectorTree = commonSelectors.copy()
                     newSelectorTree.append(childSelector)
                     selectorTrees.append(newSelectorTree)
@@ -38,7 +38,7 @@ class DataExtractor(object):
                     commonSelectorsFromParent = commonSelectors.copy()
                     commonSelectorsFromParent.append(childSelector)
                     childSelectorTrees = self.__recursiveFindSelectorTrees(childSelector.__getattribute__("id"), commonSelectorsFromParent)
-                    selectorTrees.append(childSelectorTrees)
+                    selectorTrees.extend(childSelectorTrees)
 
         if len(selectorTrees) == 0:
             return list(commonSelectors)
@@ -58,7 +58,58 @@ class DataExtractor(object):
 
         return commonSelectors
 
+    def getSelectorTreeData(self, currentSelectorTree, parentSelectorId, parentElement, commonData):
+        childCommonData = self.getSelectorTreeCommonData(currentSelectorTree, parentSelectorId, parentElement)
+        commonData.update(childCommonData)
+
+        directChildSelectors = self.sitemap.getDirectChildSelectors(parentSelectorId)
+        for childSelector in directChildSelectors:
+            if childSelector.will_return_multiple_records():
+                newCommonData = commonData.copy()
+                self.getMultiSelectorData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement, newCommonData)
+
+    def getSelectorTreeCommonData(self, currentSelectorTree, parentSelectorId, parentElement):
+        commonData = dict()
+        directChildSelectors = self.sitemap.getDirectChildSelectors(parentSelectorId)
+
+        for childSelector in directChildSelectors:
+            if not childSelector.will_return_multiple_records():
+                currentCommonData = self.getSelectorCommonData(currentSelectorTree, parentSelectorId, parentElement)
+                commonData.update(currentCommonData)
+
+        return commonData
+
+    def getSelectorCommonData(self):
+        pass
+
+    def getMultiSelectorData(self, currentSelectorTree, parentSelectorId, parentElement, commonData):
+        resultData = []
+        currentSelector = self.sitemap.getSelectorById(parentSelectorId)
+
+        if not currentSelector.can_return_elements:
+            selectorData = currentSelector.getData(parentElement)
+            newCommonData = commonData.copy()
+            for record in selectorData:
+                record.update(newCommonData)
+                resultData.append(record)
+
+            return resultData
+
+        #进入element处理逻辑
+        selectorElements = currentSelector.getData(parentElement)
+
+        for element in selectorElements:
+            newCommonData = commonData.copy()
+            childRecords = self.getSelectorTreeData(currentSelector, parentSelectorId, element, newCommonData)
+            for record in childRecords:
+                record.update(newCommonData)
+
+
+
+
     def getData(self):
         selectorTrees = self.generateSelectorTrees()
 
+        for oneSelectorTree in selectorTrees:
+            self.getSelectorTreeData(oneSelectorTree, self.parentSelectorId, self.parentElement, {})
 
