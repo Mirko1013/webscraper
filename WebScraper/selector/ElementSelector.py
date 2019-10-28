@@ -36,5 +36,6 @@ class ElementSelector(Selector):
     def will_return_multiple_records(self):
         return self.can_return_multiple_records and self.multiple
 
-    def can_have_local_child(self):
-        return self.can_have_child_selectors
+    def get_specific_data(self, element):
+        return element
+

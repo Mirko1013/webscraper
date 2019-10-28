@@ -9,6 +9,9 @@ from selenium import webdriver
 from WebScraper.JsUtils import *
 from WebScraper.DataExtractor import DataExtractor
 
+from lxml import etree
+from lxml.cssselect import CSSSelector
+
 import threading
 import logging
 
@@ -19,8 +22,8 @@ class ChromeBrowser(object):
     _instance_lock = threading.Lock()
 
     def __init__(self, path, options, **kwargs):
-        #self.browser = webdriver.Chrome(executable_path=path, chrome_options=options)
-        pass
+        self.browser = webdriver.Chrome(executable_path=path, chrome_options=options)
+
     def quit(self):
         self.browser.quit()
 
@@ -36,12 +39,17 @@ class ChromeBrowser(object):
         logger.info("Start to load url: {0}".format(url))
         self.browser.execute_script(WINDOW_OPEN.format(url, '_self'))
 
+    def getResponse(self, url, fail=False):
+        if fail:
+            return Response()
+        pass
+
 
     def fetchData(self, url, sitemap, parentSelectorId):
 
         self.loadUrl(url=url)
         #对当前请求进行封装
-
+        response = etree.HTML(self.browser.page_source)
 
         dataExtractor = DataExtractor(self, sitemap, parentSelectorId, response)
         results = dataExtractor.getData()

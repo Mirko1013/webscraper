@@ -37,3 +37,6 @@ class TextSelector(Selector):
 
     def will_return_multiple_records(self):
         return self.can_return_multiple_records and self.multiple
+
+    def get_specific_data(self, element):
+        return element.text

@@ -79,8 +79,17 @@ class DataExtractor(object):
 
         return commonData
 
-    def getSelectorCommonData(self):
-        pass
+    def getSelectorCommonData(self, currentSelectorTree, parentSelectorId, parentElement):
+        selector = self.sitemap.getSelectorById(parentSelectorId)
+
+        data = selector.getData(parentElement)
+
+        if selector.can_return_elements:
+            newParentElement = data[0]
+            data = self.getSelectorTreeCommonData(currentSelectorTree, selector.__getattribute__("id"), newParentElement)
+            return data
+
+        return data[0]
 
     def getMultiSelectorData(self, currentSelectorTree, parentSelectorId, parentElement, commonData):
         resultData = []
@@ -102,8 +111,10 @@ class DataExtractor(object):
             newCommonData = commonData.copy()
             childRecords = self.getSelectorTreeData(currentSelector, parentSelectorId, element, newCommonData)
             for record in childRecords:
-                record.update(newCommonData)
+                #record.update(newCommonData)
+                resultData.append(record)
 
+        return resultData
 
 
 

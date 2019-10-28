@@ -6,6 +6,7 @@
 # @Software: PyCharm
 
 
+from lxml.cssselect import CSSSelector
 
 class RegisterSelectorType(object):
 
@@ -131,8 +132,35 @@ class Selector(object):
         raise NotImplementedError()
 
 
-    def get_data(self):
-        pass
+    def get_data(self, response):
+        elements = self.get_data_elements(response)
+
+        records = []
+
+        for element in elements:
+            record = self.get_specific_data(element)
+            records.append(record)
+
+        if self.will_return_multiple_records():
+            return records
+        else:
+            return records[:1] if records else None
 
 
+    def get_data_elements(self, response):
+        elements = []
+
+        for css_path in self.css_paths:
+            css_selector = CSSSelector(css_path)
+            elements.append(css_selector(response))
+        if not elements:
+            return None
+
+        if self.will_return_multiple_records():
+            return elements
+        else:
+            return elements[:1] if elements else []
+
+    def get_specific_data(self, element):
+        raise NotImplementedError()
 
