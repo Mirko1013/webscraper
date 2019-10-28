@@ -44,7 +44,7 @@ class SelectorFactory(object):
         """
         #root_selector = Selector('_root', 'SelectorElement', None, None)
 
-        root_selector = SelectorFactory.create_selector("SelectorElement").from_settings({"multiple": False, "id": "_root"})
+        root_selector = SelectorFactory.create_selector("SelectorElement").from_settings({"multiple": False, "id": "_root", "css_paths": "html"})
 
         def build(p_selector, selectors, created_selector):
             parent_selector_id = p_selector.id   #拿到父节点的id
@@ -151,8 +151,8 @@ class Selector(object):
         elements = []
 
         for css_path in self.css_paths:
-            css_selector = CSSSelector(css_path)
-            elements.append(css_selector(response))
+            element = response.cssselect(css_path)
+            elements.append(element)
         if not elements:
             return None
 

@@ -82,7 +82,7 @@ class DataExtractor(object):
     def getSelectorCommonData(self, currentSelectorTree, parentSelectorId, parentElement):
         selector = self.sitemap.getSelectorById(parentSelectorId)
 
-        data = selector.getData(parentElement)
+        data = selector.get_data(parentElement)
 
         if selector.can_return_elements:
             newParentElement = data[0]

@@ -40,8 +40,7 @@ class ChromeBrowser(object):
         self.browser.execute_script(WINDOW_OPEN.format(url, '_self'))
 
     def getResponse(self, url, fail=False):
-        if fail:
-            return Response()
+
         pass
 
 
@@ -50,6 +49,10 @@ class ChromeBrowser(object):
         self.loadUrl(url=url)
         #对当前请求进行封装
         response = etree.HTML(self.browser.page_source)
+
+
+        #print(etree.tostring(response))
+        #response = etree.parse(self.browser.page_source, etree.HTMLParser())
 
         dataExtractor = DataExtractor(self, sitemap, parentSelectorId, response)
         results = dataExtractor.getData()

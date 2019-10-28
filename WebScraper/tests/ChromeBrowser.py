@@ -8,7 +8,8 @@
 from WebScraper.ChromeBrowser import ChromeBrowser
 
 if __name__ == '__main__':
-    path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    #path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
     a = ChromeBrowser(path, None)
     a.fetchData("http://www.baidu.com", None, None)
     import time
