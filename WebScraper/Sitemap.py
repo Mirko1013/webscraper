@@ -23,29 +23,48 @@ class Sitemap(object):
         self.startUrl = startUrl
         self.selectors = SelectorFactory.bulid_selector_tree(selectorsStr)
 
+
     def getSelectorById(self, selectorId):
 
-        def _recursiveFind(targetId, selector, visitedSelectors):
-
-            if not selector:
-                return None
-
-            curSelectorId = selector.__getattribute__("id")
-
-            if targetId == curSelectorId:
+        def _recursive_find(selector, _selector_id):
+            if selector.__getattribute__("id") == _selector_id:
                 return selector
 
-            if curSelectorId in visitedSelectors:
+            if selector.children:
+                for child_selector in selector.children:
+                    found = _recursive_find(child_selector, _selector_id)
+                    if found:
+                        return found
+
+            else:
                 return None
 
-            visitedSelectors.append(curSelectorId)
+        return _recursive_find(self.selectors, selectorId)
 
-            for childSelector in selector.children:
-                if _recursiveFind(targetId, childSelector, visitedSelectors):
-                    return _recursiveFind(targetId, childSelector, visitedSelectors)
 
-        return _recursiveFind(selectorId, self.selectors, list())
-
+    # def getSelectorById(self, selectorId):
+    #
+    #     def _recursiveFind(targetId, selector, visitedSelectors):
+    #
+    #         if not selector:
+    #             return None
+    #
+    #         curSelectorId = selector.__getattribute__("id")
+    #
+    #         if targetId == curSelectorId:
+    #             return selector
+    #
+    #         if curSelectorId in visitedSelectors:
+    #             return None
+    #
+    #         visitedSelectors.append(curSelectorId)
+    #
+    #         for childSelector in selector.children:
+    #             if _recursiveFind(targetId, childSelector, visitedSelectors):
+    #                 return _recursiveFind(targetId, childSelector, visitedSelectors)
+    #
+    #     return _recursiveFind(selectorId, self.selectors, list())
+    #
 
     def getDirectChildSelectors(self, parentSelectorId):
         parentSelector = self.getSelectorById(parentSelectorId)
