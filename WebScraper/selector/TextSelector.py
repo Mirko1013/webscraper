@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from . import RegisterSelectorType, Selector
-
+from pyquery import PyQuery as pq
 
 @RegisterSelectorType("SelectorText")
 class TextSelector(Selector):
@@ -38,5 +38,20 @@ class TextSelector(Selector):
     def will_return_multiple_records(self):
         return self.can_return_multiple_records and self.multiple
 
-    def get_specific_data(self, element):
-        return element.text
+    def get_specific_data(self, parentElement):
+        elements = self.get_data_elements(parentElement)
+
+        resultData = list()
+
+        for element in elements:
+            data = dict()
+            text = pq(element).text()
+            data[self.id] = text
+            resultData.append(data)
+
+        if not self.multiple and len(elements) == 0:
+            data = dict()
+            data[self.id] = None
+            resultData.append(data)
+
+        return resultData

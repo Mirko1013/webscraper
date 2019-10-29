@@ -36,5 +36,8 @@ class LinkSelector(Selector):
     def will_return_multiple_records(self):
         return self.can_return_multiple_records and self.multiple
 
-    def get_specific_data(self, element):
+    def get_specific_data(self, parentElement):
+        elements = self.get_data_elements(parentElement)
+
+
         value = element.text

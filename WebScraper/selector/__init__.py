@@ -7,6 +7,7 @@
 
 
 from lxml.cssselect import CSSSelector
+from pyquery import PyQuery as pq
 
 class RegisterSelectorType(object):
 
@@ -132,29 +133,15 @@ class Selector(object):
         raise NotImplementedError()
 
 
-    def get_data(self, response):
-        elements = self.get_data_elements(response)
+    def get_data(self, parentElement):
 
-        records = []
-
-        for element in elements:
-            record = self.get_specific_data(element)
-            records.append(record)
-
-        if self.will_return_multiple_records():
-            return records
-        else:
-            return records[:1] if records else None
+        #TODO 考虑在未来加入延时，控制selector的抽取速度
+        return self.get_specific_data(parentElement)
 
 
-    def get_data_elements(self, response):
-        elements = []
 
-        for css_path in self.css_paths:
-            element = response.cssselect(css_path)
-            elements.append(element)
-        if not elements:
-            return None
+    def get_data_elements(self, parentElement):
+        elements = ElementQuery(self.css_paths, parentElement).execute()
 
         if self.will_return_multiple_records():
             return elements
@@ -164,3 +151,42 @@ class Selector(object):
     def get_specific_data(self, element):
         raise NotImplementedError()
 
+
+
+class ElementQuery(object):
+
+    def __init__(self, cssselector, parentElement):
+        self.cssselector = cssselector if cssselector else ""
+        self.parentElement = parentElement
+        self.selectedElements = list()
+
+    def getSelectorParts(self):
+        resultSelectors = []
+        currentSelector = ""
+
+        regEx = r"(,|\".*?\"|\'.*?\'|\(.*?\))"
+        cssPaths = self.cssselector.split(regEx)
+        for css in cssPaths:
+            if css == ",":
+                if currentSelector.strip().__len__() > 0:
+                    resultSelectors.append(currentSelector)
+                else:
+                    currentSelector = ""
+            else:
+                currentSelector += css
+        if currentSelector.strip().__len__() > 0:
+            resultSelectors.append(currentSelector)
+
+        return resultSelectors
+
+    def execute(self):
+        selectorParts = self.getSelectorParts()
+        #html = pq(self.parentElement)
+
+        for selector in selectorParts:
+            elements = pq(self.parentElement)(selector)
+            for item in elements:
+                if item not in self.selectedElements:
+                    self.selectedElements.append(item)
+
+        return self.selectedElements

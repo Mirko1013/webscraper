@@ -59,6 +59,8 @@ class DataExtractor(object):
         return commonSelectors
 
     def getSelectorTreeData(self, currentSelectorTree, parentSelectorId, parentElement, commonData):
+        resultData = []
+
         childCommonData = self.getSelectorTreeCommonData(currentSelectorTree, parentSelectorId, parentElement)
         commonData.update(childCommonData)
 
@@ -66,7 +68,21 @@ class DataExtractor(object):
         for childSelector in directChildSelectors:
             if childSelector.will_return_multiple_records():
                 newCommonData = commonData.copy()
-                self.getMultiSelectorData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement, newCommonData)
+                childRecords = self.getMultiSelectorData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement, newCommonData)
+                for record in childRecords:
+                    newRecord = dict()
+                    newRecord.update(record)
+                    resultData.append(newRecord)
+
+        if len(resultData) == 0:
+            if len(commonData.keys()) == 0:
+                return list()
+            else:
+                return list(commonData)
+        else:
+            return resultData
+
+
 
     def getSelectorTreeCommonData(self, currentSelectorTree, parentSelectorId, parentElement):
         commonData = dict()
@@ -74,7 +90,7 @@ class DataExtractor(object):
 
         for childSelector in directChildSelectors:
             if not childSelector.will_return_multiple_records():
-                currentCommonData = self.getSelectorCommonData(currentSelectorTree, parentSelectorId, parentElement)
+                currentCommonData = self.getSelectorCommonData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement)
                 commonData.update(currentCommonData)
 
         return commonData
@@ -96,7 +112,7 @@ class DataExtractor(object):
         currentSelector = self.sitemap.getSelectorById(parentSelectorId)
 
         if not currentSelector.can_return_elements:
-            selectorData = currentSelector.getData(parentElement)
+            selectorData = currentSelector.get_data(parentElement)
             newCommonData = commonData.copy()
             for record in selectorData:
                 record.update(newCommonData)
@@ -105,7 +121,7 @@ class DataExtractor(object):
             return resultData
 
         #进入element处理逻辑
-        selectorElements = currentSelector.getData(parentElement)
+        selectorElements = currentSelector.get_data(parentElement)
 
         for element in selectorElements:
             newCommonData = commonData.copy()

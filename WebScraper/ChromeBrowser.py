@@ -11,6 +11,7 @@ from WebScraper.DataExtractor import DataExtractor
 
 from lxml import etree
 from lxml.cssselect import CSSSelector
+from pyquery import PyQuery as pq
 
 import threading
 import logging
@@ -48,11 +49,14 @@ class ChromeBrowser(object):
 
         self.loadUrl(url=url)
         #对当前请求进行封装
-        response = etree.HTML(self.browser.page_source)
+        #response = etree.HTML(self.browser.page_source)
 
 
         #print(etree.tostring(response))
         #response = etree.parse(self.browser.page_source, etree.HTMLParser())
 
-        dataExtractor = DataExtractor(self, sitemap, parentSelectorId, response)
+        parentElement = pq(self.browser.page_source)
+
+
+        dataExtractor = DataExtractor(self, sitemap, parentSelectorId, parentElement("html")[0])
         results = dataExtractor.getData()
