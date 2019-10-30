@@ -68,8 +68,9 @@ class DataExtractor(object):
         for childSelector in directChildSelectors:
             if childSelector.will_return_multiple_records():
                 newCommonData = commonData.copy()
-                childRecords = self.getMultiSelectorData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement, newCommonData)
-                for record in childRecords:
+                child_records = self.getMultiSelectorData(currentSelectorTree, childSelector.__getattribute__("id"), parentElement, newCommonData)
+
+                for record in child_records:
                     newRecord = dict()
                     newRecord.update(record)
                     resultData.append(newRecord)
@@ -78,7 +79,8 @@ class DataExtractor(object):
             if len(commonData.keys()) == 0:
                 return list()
             else:
-                return list(commonData)
+                resultData.append(commonData)
+                return resultData
         else:
             return resultData
 
@@ -127,7 +129,7 @@ class DataExtractor(object):
             newCommonData = commonData.copy()
             childRecords = self.getSelectorTreeData(currentSelector, parentSelectorId, element, newCommonData)
             for record in childRecords:
-                #record.update(newCommonData)
+                record.update(newCommonData)
                 resultData.append(record)
 
         return resultData
@@ -135,8 +137,12 @@ class DataExtractor(object):
 
 
     def getData(self):
+        data_result = list()
+
         selectorTrees = self.generateSelectorTrees()
 
         for oneSelectorTree in selectorTrees:
-            self.getSelectorTreeData(oneSelectorTree, self.parentSelectorId, self.parentElement, {})
+            results = self.getSelectorTreeData(oneSelectorTree, self.parentSelectorId, self.parentElement, {})
+            data_result.extend(results)
 
+        return data_result

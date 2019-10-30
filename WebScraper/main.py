@@ -7,7 +7,7 @@
 
 
 
-from pyquery import PyQuery as pq
+
 
 if __name__ == '__main__':
     #
@@ -25,13 +25,31 @@ if __name__ == '__main__':
     #
     # sitemap = Sitemap(sitemap_json.get("_id"), sitemap_json.get("startUrl"), sitemap_json.get("selectors"))
     # print("end")
+    #
+    # restr = r"(,|\".*?\"|\'.*?\'|\(.*?\))"
+    # str = "div.jumbotron h1"
+    # print(str.split(restr))
+    #
+    # d = pq("<html>a</html>")
+    # print(type(d))
+    #
+    # dd = d("html")[0]
+    # print(type(pq(dd)))
+    # a = dict()
+    # a["1"] = 1
+    # a["2"] = 2
+    # print(a)
+    # b = list()
+    # b.append(a)
+    # print(b)
 
-    restr = r"(,|\".*?\"|\'.*?\'|\(.*?\))"
-    str = "div.jumbotron h1"
-    print(str.split(restr))
+    import re
 
-    d = pq("<html>a</html>")
-    print(type(d))
+    regex = re.compile(r"(https?://)?([a-z0-9\-.]+\.[a-z0-9\-]+(:\d+)?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?)?(/[^?]*/|/)?([^?]*)?(\?.*)?")
+   # url = "http://www.runoob.com:80/html/html-tutorial.html?a=2"
+#url = "/"
+    url = "?a=1"
 
-    dd = d("html")[0]
-    print(type(pq(dd)))
+    result = regex.match(url)
+    a = result.groups()
+    print(result.group(1))

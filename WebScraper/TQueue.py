@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2019/8/14 15:53
 # @Author  : mirko
-# @FileName: Queue.py
+# @FileName: TQueue.py
 # @Software: PyCharm
 
 from queue import Queue

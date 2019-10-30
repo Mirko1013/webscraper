@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from . import RegisterSelectorType, Selector
-
+from pyquery import PyQuery as pq
 
 @RegisterSelectorType("SelectorLink")
 class LinkSelector(Selector):
@@ -37,7 +37,24 @@ class LinkSelector(Selector):
         return self.can_return_multiple_records and self.multiple
 
     def get_specific_data(self, parentElement):
+        resultData = list()
         elements = self.get_data_elements(parentElement)
 
+        if not self.multiple and len(elements) == 0:
+            data = dict()
+            data[self.id] = None
+            resultData.append(data)
+            return resultData
 
-        value = element.text
+
+        for element in elements:
+            pq_object = pq(element)
+            data = dict()
+            data[self.id] = pq_object.text()
+            data["_followSelectorId"] = self.id
+            data[str(self.id) + "-href"] = pq_object.attr("href")
+            data["_follow"] = pq_object.attr("href")
+
+            resultData.append(data)
+
+        return resultData

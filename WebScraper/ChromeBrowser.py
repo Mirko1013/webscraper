@@ -60,3 +60,5 @@ class ChromeBrowser(object):
 
         dataExtractor = DataExtractor(self, sitemap, parentSelectorId, parentElement("html")[0])
         results = dataExtractor.getData()
+
+        return results

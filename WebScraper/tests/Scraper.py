@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from WebScraper.Sitemap import Sitemap
-from WebScraper.Queue import TaskQueue
+from WebScraper.TQueue import TaskQueue
 from WebScraper.ChromeBrowser import ChromeBrowser
 from WebScraper.Scraper import Scraper
 
@@ -14,8 +14,8 @@ from WebScraper.Scraper import Scraper
 import json
 
 def main():
-    #path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
-    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
 
     with open("../../testlink.json", encoding="utf-8") as f:
        json_sitemap = json.load(f)
