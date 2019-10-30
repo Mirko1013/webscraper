@@ -27,8 +27,8 @@ class Job(object):
 
         regex = re.compile(r"(https?://)?([a-z0-9\-.]+\.[a-z0-9\-]+(:\d+)?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?)?(/[^?]*/|/)?([^?]*)?(\?.*)?")
 
-        parent_group = regex.match(parent_url).groups()
-        child_group = regex.match(child_url).groups()
+        parent_group = list(regex.match(parent_url).groups())
+        child_group = list(regex.match(child_url).groups())
 
         abso_url = str()
 

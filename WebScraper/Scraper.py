@@ -20,6 +20,8 @@ class Scraper(object):
         self.sitemap = sitemap
         self.browser = browser
 
+        self.results_writer = list()
+
         #TODO 数据库存放相关的句柄
 
 
@@ -40,7 +42,7 @@ class Scraper(object):
         #TODO 初始化数据库写入实例
 
         self._run()
-
+        return self.results_writer
 
     def record_can_have_child_jobs(self, record):
         if "_follow" not in record.keys():
@@ -54,7 +56,7 @@ class Scraper(object):
             return True
 
     def _run(self):
-        scrapedRecords = list()
+
 
 
         job = self.queue.getNextJob()
@@ -84,7 +86,7 @@ class Scraper(object):
                 if "_follow" in record.keys():
                     del record["_follow"]
                     del record["_followSelectorId"]
-                scrapedRecords.append(record)
+                self.results_writer.append(record)
 
 
 

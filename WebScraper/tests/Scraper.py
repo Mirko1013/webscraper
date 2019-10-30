@@ -14,8 +14,8 @@ from WebScraper.Scraper import Scraper
 import json
 
 def main():
-    path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
-    #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    # = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
 
     with open("../../testlink.json", encoding="utf-8") as f:
        json_sitemap = json.load(f)
@@ -31,7 +31,8 @@ def main():
     # e=sitemap.getSelectorById("reviews")
     # f=sitemap.getSelectorById("intro")
     # print("lalal")
-    scraper.run()
+    data = scraper.run()
+    print("圆满完成任务！")
 
 if __name__ == '__main__':
     main()
