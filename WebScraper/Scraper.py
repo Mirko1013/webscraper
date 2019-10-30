@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from WebScraper.Job import Job
-from WebScraper.Queue import TaskQueue
+from WebScraper.TQueue import TaskQueue
 from WebScraper.ChromeBrowser import ChromeBrowser
 
 import logging
@@ -42,7 +42,20 @@ class Scraper(object):
         self._run()
 
 
+    def record_can_have_child_jobs(self, record):
+        if "_follow" not in record.keys():
+            return False
+
+        followSelectorId = record.get("_followSelectorId")
+        selector = self.sitemap.getSelectorById(followSelectorId)
+        if hasattr(selector, "children") and len(selector.children) == 0:
+            return False
+        else:
+            return True
+
     def _run(self):
+        scrapedRecords = list()
+
 
         job = self.queue.getNextJob()
 
@@ -51,6 +64,30 @@ class Scraper(object):
             return
 
         job.execute(browser=self.browser)
+
+        results = job.getResults()
+
+
+
+        for record in results:
+            if self.record_can_have_child_jobs(record):
+                follow_url = record.get("_follow")
+                follow_selector = record.get("_followSelectorId")
+                del record["_follow"]
+                del record["_followSelectorId"]
+
+                new_job = Job(url=follow_url, parentSelectorId=follow_selector, scraper=self, parentJob=job, baseData=record)
+
+                if not self.queue.isFull():
+                    self.queue.add(new_job)
+            else:
+                if "_follow" in record.keys():
+                    del record["_follow"]
+                    del record["_followSelectorId"]
+                scrapedRecords.append(record)
+
+
+
 
         #TODO 对job返回的数据进行处理，同时递归调用_run()
 
