@@ -45,7 +45,7 @@ class SelectorFactory(object):
         """
         #root_selector = Selector('_root', 'SelectorElement', None, None)
 
-        root_selector = SelectorFactory.create_selector("SelectorElement").from_settings({"multiple": False, "id": "_root", "css_paths": "html"})
+        root_selector = SelectorFactory.create_selector("SelectorElement").from_settings({"multiple": False, "id": "_root"})
 
         def build(p_selector, selectors, created_selector):
             parent_selector_id = p_selector.id   #拿到父节点的id
@@ -148,7 +148,7 @@ class Selector(object):
         else:
             return elements[:1] if elements else []
 
-    def get_specific_data(self, element):
+    def get_specific_data(self, parentElement):
         raise NotImplementedError()
 
 
