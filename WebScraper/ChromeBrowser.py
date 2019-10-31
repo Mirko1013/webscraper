@@ -6,12 +6,14 @@
 # @Software: PyCharm
 
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from WebScraper.JsUtils import *
 from WebScraper.DataExtractor import DataExtractor
 
 from lxml import etree
 from lxml.cssselect import CSSSelector
 from pyquery import PyQuery as pq
+
 
 import threading
 import logging
@@ -23,7 +25,30 @@ class ChromeBrowser(object):
     _instance_lock = threading.Lock()
 
     def __init__(self, path, options, **kwargs):
-        self.browser = webdriver.Chrome(executable_path=path, chrome_options=options)
+        self.options = self.chrome_options(options)
+        self.browser = webdriver.Chrome(executable_path=path, chrome_options=self.options)
+
+
+    def chrome_options(self, options):
+        default_options = Options()
+
+        for option in options:
+            default_options.add_argument(option)
+
+        #手机浏览器配置
+        # emulation = {
+        #     'deviceName': 'iPhone 6 Plus'
+        # }
+        #
+        # default_options.add_experimental_option("mobileEmulation", emulation)
+
+        #default_options.add_argument('--headless')
+        default_options.add_argument('--disable-gpu')
+        default_options.add_argument('--no-sandbox')
+        default_options.add_argument('blink-settings=imageEnabled=false')
+        default_options.add_argument('--disable-plugins')
+
+        return default_options
 
     def quit(self):
         self.browser.quit()

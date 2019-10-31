@@ -41,9 +41,9 @@ class DataExtractor(object):
                     selectorTrees.extend(childSelectorTrees)
 
         if len(selectorTrees) == 0:
-            return list(commonSelectors)
-        else:
-            return selectorTrees
+            selectorTrees.append(commonSelectors)
+
+        return selectorTrees
 
     def findAllCommonSelectors(self, parentSelectorId):
         commonSelectors = list()

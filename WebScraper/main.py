@@ -43,13 +43,18 @@ if __name__ == '__main__':
     # b.append(a)
     # print(b)
 
-    import re
+#     import re
+#
+#     regex = re.compile(r"(https?://)?([a-z0-9\-.]+\.[a-z0-9\-]+(:\d+)?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?)?(/[^?]*/|/)?([^?]*)?(\?.*)?")
+#    # url = "http://www.runoob.com:80/html/html-tutorial.html?a=2"
+# #url = "/"
+#     url = "?a=1"
+#
+#     result = regex.match(url)
+#     a = result.groups()
+#     print(result.group(1))
 
-    regex = re.compile(r"(https?://)?([a-z0-9\-.]+\.[a-z0-9\-]+(:\d+)?|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?)?(/[^?]*/|/)?([^?]*)?(\?.*)?")
-   # url = "http://www.runoob.com:80/html/html-tutorial.html?a=2"
-#url = "/"
-    url = "?a=1"
-
-    result = regex.match(url)
-    a = result.groups()
-    print(result.group(1))
+    a = list()
+    b = [1,2,3,4,5]
+    c = list(b)
+    print(b)

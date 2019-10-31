@@ -14,14 +14,14 @@ from WebScraper.Scraper import Scraper
 import json
 
 def main():
-    # = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
-    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    path= r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
 
     with open("../../testlink.json", encoding="utf-8") as f:
        json_sitemap = json.load(f)
     sitemap = Sitemap(json_sitemap.get("_id"), json_sitemap.get("startUrl"), json_sitemap.get("selectors"))
     queue = TaskQueue()
-    browser = ChromeBrowser(path, None)
+    browser = ChromeBrowser(path, list())
 
     scraper = Scraper(queue, sitemap, browser)
     # a=sitemap.getSelectorById("_root")
