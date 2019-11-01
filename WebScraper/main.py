@@ -5,8 +5,8 @@
 # @FileName: main.py
 # @Software: PyCharm
 
-
-
+from selenium.webdriver.support.expected_conditions import *
+from selenium.webdriver.common.by import By
 
 
 if __name__ == '__main__':
@@ -54,7 +54,15 @@ if __name__ == '__main__':
 #     a = result.groups()
 #     print(result.group(1))
 
-    a = list()
-    b = [1,2,3,4,5]
-    c = list(b)
-    print(b)
+    # a = list()
+#     # b = [1,2,3,4,5]
+#     # c = list(b)
+#     # print(b)
+
+
+
+    a = "presence_of_element_located((By.TAG_NAME, \"title\"))"
+
+    b = eval(a)
+
+    print("done")

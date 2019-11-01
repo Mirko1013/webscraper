@@ -1,0 +1,29 @@
+sitemap的校验包括processors, actions, selectors等,
+这些校验应该在生成sitemap时, 即马上进行校验, 如果出错, 则抛出异常, 记录
+不应该留在运行时或者抓取数据后再进行!!!
+
+
+
+    {
+      "parentSelectors": [
+        "_root"
+      ],
+      "type": "SelectorLink",
+      "multiple": true,
+      "id": "category_link",
+      "selector": "div.mc li",
+      "delay": "",
+      "processors": [
+        {"ProcessorStrip": []},
+        {"ProcessorUrl": ["pre_url", "post_url"]}
+      ],
+      "actions": [
+        {"ClickAction": {"css_path": "td td td td input"}},
+        {"WaitAction": {"condition": "presence_of_element_located((By.TAG_NAME, \"title\"))", "timeout": "10"}}
+      ]
+    },
+理解为_root页面打开后, 使用"div.mc li"抽取出来的东西, 经过processors处理后得到的url, 扔出request, request的如果为JS
+则行为由actions指定
+
+
+第一个的OpenAction, 默认是由程序自己判断, 不需要在其中增加一些click信息, 判断条件为is_href_normal函数
