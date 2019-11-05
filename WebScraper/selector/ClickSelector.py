@@ -6,6 +6,7 @@
 # @Software: PyCharm
 
 from . import RegisterSelectorType, Selector
+from WebScraper.action import ActionFactory
 from pyquery import PyQuery as pq
 
 @RegisterSelectorType("SelectorClick")
@@ -19,13 +20,17 @@ class ClickSelector(Selector):
 
     features = {
         'multiple': False,
-        'delay': 0
+        'delay': 0,
+        'actions': None
     }
 
-    def __int__(self, id, type, css_paths, parent_selectors, multiple, delay, **kwargs):
+    def __int__(self, id, type, css_paths, parent_selectors, multiple, delay, actions, **kwargs):
         super(ClickSelector, self).__init__(id, type, css_paths, parent_selectors)
+
         self.multiple = multiple
         self.delay = delay
+        self.actions = actions
+
 
     @classmethod
     def get_features(cls):
@@ -33,6 +38,14 @@ class ClickSelector(Selector):
         base_features.update(cls.features)
 
         return base_features
+
+    @classmethod
+    def from_settings(cls, settings):
+        selector = super(ClickSelector, cls).from_settings(settings)
+        selector.actions = ActionFactory.gen_actions_chain(selector.actions)
+
+        return selector
+
     def will_return_multiple_records(self):
         return self.multiple and self.can_return_multiple_records
 
