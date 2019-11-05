@@ -6,12 +6,28 @@
 # @Software: PyCharm
 
 from WebScraper.ChromeBrowser import ChromeBrowser
+from selenium.webdriver.common.by import By
+from copy import deepcopy
 
 if __name__ == '__main__':
     #path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
     path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
-    a = ChromeBrowser(path, None)
-    a.fetchData("http://www.baidu.com", None, None)
+    a = ChromeBrowser(path, {})
+    url = "https://author.baidu.com/home/1625877293629981"
+    #
+    a.browser.get(url)
+    article_card = a.browser.find_element_by_css_selector("div.s-card")
+    print(article_card)
+    current_handle = a.browser.current_window_handle.copy()
+
+    article_card.click()
+
+
+
+
+
     import time
-    time.sleep(5)
+    time.sleep(3)
+
+    a.browser.switch_to_window(current_handle)
     a.quit()

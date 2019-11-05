@@ -59,10 +59,10 @@ if __name__ == '__main__':
 #     # c = list(b)
 #     # print(b)
 
-
-
-    a = "presence_of_element_located((By.TAG_NAME, \"title\"))"
-
-    b = eval(a)
-    print(callable(1))
-    print("done")
+    #
+    #
+    # a = "presence_of_element_located((By.TAG_NAME, \"title\"))"
+    #
+    # b = eval(a)
+    # print(callable(1))
+    # print("done")
