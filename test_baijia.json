@@ -1,0 +1,105 @@
+{
+  "_id": "test_baijia",
+  "startUrl": "https://author.baidu.com/home/1625877293629981",
+  "selectors": [
+    {
+      "id": "article-card",
+      "type": "SelectorElement",
+      "parent_selectors": [
+        "_root"
+      ],
+      "css_paths": "div.feed-item",
+      "multiple": true,
+      "delay": 0
+    },
+    {
+      "id": "yuedu",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "article-card"
+      ],
+      "css_paths": "span.sfi-article-span:nth-of-type(1)",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "pinglun",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "article-card"
+      ],
+      "css_paths": "span:nth-of-type(2)",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "shijian",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "article-card"
+      ],
+      "css_paths": "span:nth-of-type(3)",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "xiangqing",
+      "type": "SelectorAttribute",
+      "parent_selectors": [
+        "article-card"
+      ],
+      "css_paths": ".sfi-article",
+      "multiple": false,
+      "extract_attribute": "url",
+      "create_new_jobs": true,
+      "delay": 0
+    },
+    {
+      "id": "biaoti",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "css_paths": ".article-title h2",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "date",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "css_paths": "span.date",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "time",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "css_paths": "span.time",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    },
+    {
+      "id": "article",
+      "type": "SelectorText",
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "css_paths": "div.article",
+      "multiple": false,
+      "regex": "",
+      "delay": 0
+    }
+  ]
+}

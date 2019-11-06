@@ -129,7 +129,34 @@ class Selector(object):
         else:
             self.children = [selector, ]
 
+
     def will_return_multiple_records(self):
+        """
+        用于DataExtractor中的getSelectorTreeData、getSelectorTreeCommonData函数判断是否需要进入多记录处理逻辑
+        :return:
+        """
+        raise NotImplementedError()
+
+    def will_return_elements(self):
+        """
+        用于DataExtractor中的getMultiSelectorData函数判断直接组合数据或
+        用一棵新的Selector对当前selector返回的elements进行提取
+        :return:
+        """
+        raise NotImplementedError()
+
+    def will_return_new_jobs(self):
+        """
+        用于Sitemmap构建Selector-Tree时，判断当前selector是否为common节点
+        :return:
+        """
+        raise NotImplementedError()
+
+    def will_return_local_childs(self):
+        """
+        用于DataExtractor中的generateSelectorTrees函数进行森林划分时的判断标准
+        :return:
+        """
         raise NotImplementedError()
 
 

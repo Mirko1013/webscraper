@@ -9,6 +9,7 @@ from WebScraper.selector import SelectorFactory
 from WebScraper.selector.TextSelector import TextSelector
 from WebScraper.selector.LinkSelector import LinkSelector
 from WebScraper.selector.ElementSelector import ElementSelector
+from WebScraper.selector.AttributeSelector import AttributeSelector
 
 import logging
 import json
@@ -114,7 +115,7 @@ class Sitemap(object):
             if selector.will_return_multiple_records():
                 tag = False
 
-            if selector.can_create_new_jobs and len(selector.children) > 0:
+            if selector.will_return_new_jobs() and len(selector.children) > 0:
                 tag = False
 
             visitedSelectors.append(selector.__getattribute__("id"))

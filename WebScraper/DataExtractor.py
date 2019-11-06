@@ -30,7 +30,7 @@ class DataExtractor(object):
         directChildSelectors = self.sitemap.getDirectChildSelectors(parentSelectorId)
         for childSelector in directChildSelectors:
             if not self.sitemap.isCommonSelector(childSelector):
-                if not childSelector.can_have_local_child_selectors: #link等需要在新页面打开的导航节点
+                if not childSelector.will_return_local_childs(): #link等需要在新页面打开的导航节点
                     newSelectorTree = commonSelectors.copy()
                     newSelectorTree.append(childSelector)
                     selectorTrees.append(newSelectorTree)
@@ -113,7 +113,7 @@ class DataExtractor(object):
         resultData = []
         currentSelector = self.sitemap.getSelectorById(parentSelectorId)
 
-        if not currentSelector.can_return_elements:
+        if not currentSelector.will_return_elements():
             selectorData = currentSelector.get_data(parentElement)
             newCommonData = commonData.copy()
             for record in selectorData:
