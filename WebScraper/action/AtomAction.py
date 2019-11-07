@@ -82,7 +82,7 @@ class ClickAction(Action):
             raise NoSuchElementException
 
 
-    def do(self,driver, url, **kwargs):
+    def do(self, driver, url, **kwargs):
         click_path = self.protocol.get("click_path")
 
         exist = True

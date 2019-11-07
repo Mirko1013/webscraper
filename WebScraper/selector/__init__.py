@@ -160,14 +160,21 @@ class Selector(object):
         raise NotImplementedError()
 
 
-    def get_data(self, parentElement):
+    def get_data(self, driver, job_url, parentElement):
+        """
+        对外暴露的get_data接口，传入driver和job_url用于部分selector和浏览器交互
+        :param driver:
+        :param job_url:
+        :param parentElement:
+        :return:
+        """
 
         #TODO 考虑在未来加入延时，控制selector的抽取速度
-        return self.get_specific_data(parentElement)
+        return self.get_specific_data(driver ,job_url, parentElement)
 
 
 
-    def get_data_elements(self, parentElement):
+    def get_data_elements(self, driver, job_url, parentElement):
         elements = ElementQuery(self.css_paths, parentElement).execute()
 
         if self.will_return_multiple_records():
@@ -175,7 +182,7 @@ class Selector(object):
         else:
             return elements[:1] if elements else []
 
-    def get_specific_data(self, parentElement):
+    def get_specific_data(self, driver, job_url, parentElement):
         raise NotImplementedError()
 
 

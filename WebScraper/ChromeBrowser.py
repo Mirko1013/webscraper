@@ -26,7 +26,7 @@ class ChromeBrowser(object):
 
     def __init__(self, path, options, **kwargs):
         self.options = self.chrome_options(options)
-        self.browser = webdriver.Chrome(executable_path=path, chrome_options=self.options)
+        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
 
 
     def chrome_options(self, options):
@@ -51,7 +51,7 @@ class ChromeBrowser(object):
         return default_options
 
     def quit(self):
-        self.browser.quit()
+        self.driver.quit()
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(ChromeBrowser, "_instance"):
@@ -63,7 +63,7 @@ class ChromeBrowser(object):
 
     def loadUrl(self, url):
         logger.info("Start to load url: {0}".format(url))
-        self.browser.execute_script(WINDOW_OPEN.format(url, '_self'))
+        self.driver.execute_script(WINDOW_OPEN.format(url, '_self'))
 
     def getResponse(self, url, fail=False):
 
@@ -80,10 +80,10 @@ class ChromeBrowser(object):
         #print(etree.tostring(response))
         #response = etree.parse(self.browser.page_source, etree.HTMLParser())
 
-        parentElement = pq(self.browser.page_source)
+        parentElement = pq(self.driver.page_source)
 
 
-        dataExtractor = DataExtractor(self, sitemap, parentSelectorId, parentElement("html")[0])
+        dataExtractor = DataExtractor(self.driver, url, sitemap, parentSelectorId, parentElement("html")[0])
         results = dataExtractor.getData()
 
         return results

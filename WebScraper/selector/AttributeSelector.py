@@ -53,9 +53,9 @@ class AttributeSelector(Selector):
         return self.can_return_elements
 
 
-    def get_specific_data(self, parentElement):
+    def get_specific_data(self, driver, job_url, parentElement):
         resultData = list()
-        elements = self.get_data_elements(parentElement)
+        elements = self.get_data_elements(driver, job_url, parentElement)
 
         if not self.multiple and len(elements) == 0:
             data = dict()

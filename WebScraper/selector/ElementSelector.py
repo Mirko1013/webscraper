@@ -18,8 +18,8 @@ class ElementSelector(Selector):
     can_return_elements = True
 
     features = {
-        'multiple': False,
-        'delay': 0
+        "multiple": False,
+        "delay": 0
     }
 
     def __init__(self, id, type, css_paths, parent_selectors, multiple, delay, **kwargs):
@@ -45,8 +45,8 @@ class ElementSelector(Selector):
     def will_return_local_childs(self):
         return self.can_have_local_child_selectors
 
-    def get_specific_data(self, parentElement):
-        elements = self.get_data_elements(parentElement)
+    def get_specific_data(self, driver, job_url, parentElement):
+        elements = self.get_data_elements(driver ,job_url, parentElement)
 
         return list(elements)
 

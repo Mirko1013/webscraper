@@ -5,6 +5,9 @@
 # @FileName: Utils.py
 # @Software: PyCharm
 
+
+import time, threading
+
 DICT_OR_SINGLE_VALUES = (dict, bytes)
 
 def arg2iter(arguments):
@@ -17,3 +20,30 @@ def arg2iter(arguments):
         return arguments
     else:
         return [arguments]
+
+
+class setInterval(object):
+    def __init__(self, interval, func, *args, **kwargs):
+        self.interval = interval
+        self.func = func
+        self.stopEvent = threading.Event()
+        thread = threading.Thread(target=self.__task_func, args=args, kwargs=kwargs)
+        thread.start()
+
+
+    def __task_func(self, *args, **kwargs):
+        """
+        利用threading event的特性，wait(timeout)会阻塞当前进程，超时后会继续
+        调用set()方法后event会返回true，继而退出循环，结束setInterval调用
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        next_time = time.time() + self.interval
+        while not self.stopEvent.wait(next_time - time.time()):
+            next_time += self.interval
+            self.func(*args, **kwargs)
+
+    def cancel(self):
+        self.stopEvent.set()
+

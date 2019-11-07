@@ -7,7 +7,9 @@
 
 from . import RegisterSelectorType, Selector
 from WebScraper.action import ActionFactory
+from WebScraper.Utils import setInterval
 from pyquery import PyQuery as pq
+
 
 @RegisterSelectorType("SelectorClick")
 class ClickSelector(Selector):
@@ -19,9 +21,9 @@ class ClickSelector(Selector):
     can_return_elements = False
 
     features = {
-        'multiple': False,
-        'delay': 0,
-        'actions': None
+        "multiple": False,
+        "delay": 0,
+        "actions": None
     }
 
     def __int__(self, id, type, css_paths, parent_selectors, multiple, delay, actions, **kwargs):
@@ -49,5 +51,14 @@ class ClickSelector(Selector):
     def will_return_multiple_records(self):
         return self.multiple and self.can_return_multiple_records
 
-    def get_specific_data(self, element):
+    def will_return_elements(self):
+        return self.can_return_elements
+
+    def will_return_new_jobs(self):
+        return self.can_create_new_jobs
+
+    def will_return_local_childs(self):
+        return self.can_have_local_child_selectors
+
+    def get_specific_data(self, driver, job_url, element):
         pass

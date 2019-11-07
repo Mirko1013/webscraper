@@ -18,9 +18,9 @@ class TextSelector(Selector):
     can_return_elements = False
 
     features = {
-        'multiple': False,
-        'delay': 0,
-        'regex': ''
+        "multiple": False,
+        "delay": 0,
+        "regex": str()
     }
 
     def __init__(self, id, type, css_paths, parent_selectors, multiple, delay, regex, **kwargs):
@@ -47,8 +47,8 @@ class TextSelector(Selector):
     def will_return_local_childs(self):
         return self.can_have_local_child_selectors
 
-    def get_specific_data(self, parentElement):
-        elements = self.get_data_elements(parentElement)
+    def get_specific_data(self, driver, job_url, parentElement):
+        elements = self.get_data_elements(driver, job_url, parentElement)
 
         resultData = list()
 

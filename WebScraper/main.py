@@ -7,9 +7,24 @@
 
 from selenium.webdriver.support.expected_conditions import *
 from selenium.webdriver.common.by import By
+from WebScraper.Utils import setInterval
+import threading
+import time
+start_time = time.time()
+
+
+def action(echo):
+    print("{}action ! -> time: {:.1f}s".format(echo, time.time() - start_time))
 
 
 if __name__ == '__main__':
+    #测试setInterval的多线程实现
+
+    inter = setInterval(0.5, action, "你可长点心把 ")
+    print('just after setInterval -> time : {:.1f}s'.format(time.time() - start_time))
+
+    t = threading.Timer(5, inter.cancel)
+    t.start()
     pass
     # os.environ["PATH"] += ":" + os.path.abspath("./webdriver")
     #
