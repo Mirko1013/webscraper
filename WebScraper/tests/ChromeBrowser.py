@@ -10,8 +10,8 @@ from selenium.webdriver.common.by import By
 from copy import deepcopy
 
 if __name__ == '__main__':
-    path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
-    #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    #path = r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
     a = ChromeBrowser(path, {})
     url = "https://author.baidu.com/home/1625877293629981"
     #

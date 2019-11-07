@@ -10,7 +10,7 @@ from copy import deepcopy
 class DataExtractor(object):
 
     def __init__(self, driver, url, sitemap, parentSelectorId, parentElement,*args, **kwargs):
-        self.url = job_url
+        self.url = url
         self.driver = driver
         self.sitemap = sitemap
         self.parentSelectorId = parentSelectorId

@@ -9,11 +9,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from WebScraper.JsUtils import *
 from WebScraper.DataExtractor import DataExtractor
+from WebScraper.action import ActionFactory
+from WebScraper.action.AtomAction import *
 
 from lxml import etree
 from lxml.cssselect import CSSSelector
 from pyquery import PyQuery as pq
-
+from WebScraper.Utils import get_md5
 
 import threading
 import logging
@@ -27,7 +29,7 @@ class ChromeBrowser(object):
     def __init__(self, path, options, **kwargs):
         self.options = self.chrome_options(options)
         self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
-
+        self.rainbow= dict()
 
     def chrome_options(self, options):
         default_options = Options()
@@ -69,10 +71,16 @@ class ChromeBrowser(object):
 
         pass
 
+    def url_2_handle(self, url):
+        return self.rainbow.get(get_md5(url), None)
+
+
 
     def fetchData(self, url, sitemap, parentSelectorId):
 
-        self.loadUrl(url=url)
+        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=False)
+        open_action.do(self.driver)
+        #self.loadUrl(url=url)
         #对当前请求进行封装
         #response = etree.HTML(self.browser.page_source)
 

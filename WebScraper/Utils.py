@@ -7,6 +7,7 @@
 
 
 import time, threading
+import hashlib
 
 DICT_OR_SINGLE_VALUES = (dict, bytes)
 
@@ -20,6 +21,11 @@ def arg2iter(arguments):
         return arguments
     else:
         return [arguments]
+
+
+def get_md5(str):
+    return hashlib.md5(str).hexdigest()
+
 
 
 class setInterval(object):

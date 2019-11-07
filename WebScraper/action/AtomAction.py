@@ -11,18 +11,44 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotVisibleException
+from WebScraper.JsUtils import WINDOW_OPEN
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 @RegisterActionType("OpenAction")
 class OpenAction(Action):
-
-    def __init__(self):
-        pass
+    """
+        协议如下:{"url": "http://www.example.com", "in_new_tab": True or False}
+    """
+    def __init__(self, protocol):
+        super(OpenAction, self).__init__(protocol=protocol)
 
     def pre_check(self, protocol):
         pass
 
-    def do(self, **kwargs):
-        pass
+    def do(self, driver, *args, **kwargs):
+        url = self.protocol.get("url", None)
+        in_new_tab = self.protocol.get("in_new_tab", False)
+
+        try:
+            logger.info("OpenAction start to load url -> {}, with open type -> {}".format(url, in_new_tab))
+            if in_new_tab:
+                driver.execute_script(WINDOW_OPEN.format(url, '_blank'))
+            else:
+                driver.execute_script(WINDOW_OPEN.format(url, '_self'))
+
+            driver.switch_to_window(driver.window_handles[-1])
+            print(driver.current_window_handle)
+        except Exception:
+            #TODO 捕获打开异常
+            pass
+
+
+    @classmethod
+    def from_settings(cls, url, in_new_tab):
+        return cls({"url": url, "in_new_tab": in_new_tab})
 
 @RegisterActionType("WaitAction")
 class WaitAction(Action):
@@ -48,7 +74,7 @@ class WaitAction(Action):
         protocol["condition"] = condition
         protocol["timeout"] = self.MAX_WAIT_TIME if timeout > self.MAX_WAIT_TIME else timeout
 
-    def do(self, driver, url, **kwargs):
+    def do(self, driver, url, *args, **kwargs):
 
         condition = self.protocol.get("condition")
         timeout = self.protocol.get("timeout")
@@ -82,7 +108,7 @@ class ClickAction(Action):
             raise NoSuchElementException
 
 
-    def do(self, driver, url, **kwargs):
+    def do(self, driver, url, *args, **kwargs):
         click_path = self.protocol.get("click_path")
 
         exist = True
