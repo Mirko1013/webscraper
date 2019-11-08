@@ -28,8 +28,11 @@ class ChromeBrowser(object):
 
     def __init__(self, path, options, **kwargs):
         self.options = self.chrome_options(options)
-        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
         self.rainbow= dict()
+        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
+
+        assert len(self.driver.window_handles) == 1
+        self.update_urm_handle(self.driver.current_url, self.driver.current_window_handle)
 
     def chrome_options(self, options):
         default_options = Options()
@@ -67,19 +70,35 @@ class ChromeBrowser(object):
         logger.info("Start to load url: {0}".format(url))
         self.driver.execute_script(WINDOW_OPEN.format(url, '_self'))
 
-    def getResponse(self, url, fail=False):
 
-        pass
-
-    def url_2_handle(self, url):
+    def get_urm_handle(self, url):
+        """
+        传入url，返回彩虹表中维护对于该url_key的handle
+        :param url:
+        :return:
+        """
         return self.rainbow.get(get_md5(url), None)
 
+
+    def update_urm_handle(self, url, handle):
+        """
+        传入url和handle(类型为str)，判断url_key是否在彩虹表中。如在，更新，否则添加
+        :param url:
+        :param handle:
+        :return:
+        """
+        url_key = get_md5(url)
+
+        if not url_key in self.rainbow.keys():
+            self.rainbow[url_key] = handle
+        else:
+            url_key[url_key] = handle
 
 
     def fetchData(self, url, sitemap, parentSelectorId):
 
-        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=False)
-        open_action.do(self.driver)
+        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=True)
+        open_action.do(self)
         #self.loadUrl(url=url)
         #对当前请求进行封装
         #response = etree.HTML(self.browser.page_source)
@@ -91,7 +110,7 @@ class ChromeBrowser(object):
         parentElement = pq(self.driver.page_source)
 
 
-        dataExtractor = DataExtractor(self.driver, url, sitemap, parentSelectorId, parentElement("html")[0])
+        dataExtractor = DataExtractor(self, url, sitemap, parentSelectorId, parentElement("html")[0])
         results = dataExtractor.getData()
 
         return results

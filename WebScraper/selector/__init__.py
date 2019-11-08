@@ -160,14 +160,18 @@ class Selector(object):
         raise NotImplementedError()
 
 
-    def get_data(self, driver, job_url, parentElement):
+    def get_data(self, browser, job_url, parentElement):
         """
-        对外暴露的get_data接口，传入driver和job_url用于部分selector和浏览器交互
-        :param driver:
+        对外暴露的get_data接口，传入browser和job_url用于部分selector和浏览器交互
+        :param browser:
         :param job_url:
         :param parentElement:
         :return:
         """
+        #根据URM映射表，切换至数据所在的window_handle
+        driver = browser.driver
+        data_handle = browser.get_urm_handle(job_url)
+        driver.switch_to_window(data_handle)
 
         #TODO 考虑在未来加入延时，控制selector的抽取速度
         return self.get_specific_data(driver ,job_url, parentElement)

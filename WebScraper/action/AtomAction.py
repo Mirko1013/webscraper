@@ -28,27 +28,43 @@ class OpenAction(Action):
     def pre_check(self, protocol):
         pass
 
-    def do(self, driver, *args, **kwargs):
+    def do(self, browser, *args, **kwargs):
+        driver = browser.driver
         url = self.protocol.get("url", None)
         in_new_tab = self.protocol.get("in_new_tab", False)
 
         try:
             logger.info("OpenAction start to load url -> {}, with open type -> {}".format(url, in_new_tab))
+            cur_handle_num = len(driver.window_handles)
+
+            #首先看一下driver的当前url，判断chrome browser是否刚刚完成初始化，此时无论任何url都应在当前tab中打开
+            driver_current_url = driver.current_url
+            if driver_current_url == "data:,":
+                driver.execute_script(WINDOW_OPEN.format(url, '_self'))
+                assert len(driver.window_handles) == 1
+                browser.update_urm_handle(driver.current_url, driver.current_window_handle)
+                return
+
             if in_new_tab:
                 driver.execute_script(WINDOW_OPEN.format(url, '_blank'))
+                assert len(driver.window_handles) - cur_handle_num == 1
+
             else:
                 driver.execute_script(WINDOW_OPEN.format(url, '_self'))
+                assert len(driver.window_handles) - cur_handle_num == 0
 
-            driver.switch_to_window(driver.window_handles[-1])
-            print(driver.current_window_handle)
+            #更新browser中urm的映射关系
+            browser.update_urm_handle(url, driver.window_handles[-1])
+            #driver.switch_to_window(driver.window_handles[-1])
         except Exception:
             #TODO 捕获打开异常
             pass
 
-
     @classmethod
     def from_settings(cls, url, in_new_tab):
         return cls({"url": url, "in_new_tab": in_new_tab})
+
+
 
 @RegisterActionType("WaitAction")
 class WaitAction(Action):

@@ -9,9 +9,10 @@ from copy import deepcopy
 
 class DataExtractor(object):
 
-    def __init__(self, driver, url, sitemap, parentSelectorId, parentElement,*args, **kwargs):
+    def __init__(self, browser, url, sitemap, parentSelectorId, parentElement,*args, **kwargs):
         self.url = url
-        self.driver = driver
+        #需维护URM映射表，传入browser对象
+        self.browser = browser
         self.sitemap = sitemap
         self.parentSelectorId = parentSelectorId
         self.parentElement = parentElement
@@ -101,7 +102,7 @@ class DataExtractor(object):
     def getSelectorCommonData(self, currentSelectorTree, parentSelectorId, parentElement):
         selector = self.sitemap.getSelectorById(parentSelectorId)
 
-        data = selector.get_data(self.driver, self.url, parentElement)
+        data = selector.get_data(self.browser, self.url, parentElement)
 
         if selector.can_return_elements:
             newParentElement = data[0]
@@ -115,7 +116,7 @@ class DataExtractor(object):
         currentSelector = self.sitemap.getSelectorById(parentSelectorId)
 
         if not currentSelector.will_return_elements():
-            selectorData = currentSelector.get_data(self.driver, self.url, parentElement)
+            selectorData = currentSelector.get_data(self.browser, self.url, parentElement)
             newCommonData = commonData.copy()
             for record in selectorData:
                 record.update(newCommonData)
@@ -124,7 +125,7 @@ class DataExtractor(object):
             return resultData
 
         #进入element处理逻辑
-        selectorElements = currentSelector.get_data(self.driver, self.url, parentElement)
+        selectorElements = currentSelector.get_data(self.browser, self.url, parentElement)
 
         for element in selectorElements:
             newCommonData = commonData.copy()

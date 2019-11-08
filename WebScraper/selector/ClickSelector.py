@@ -14,11 +14,11 @@ from pyquery import PyQuery as pq
 @RegisterSelectorType("SelectorClick")
 class ClickSelector(Selector):
 
-    can_return_multiple_records = False
+    can_return_multiple_records = True
     can_have_child_selectors = True
     can_have_local_child_selectors = True
-    can_create_new_jobs = True
-    can_return_elements = False
+    can_create_new_jobs = False
+    can_return_elements = True
 
     features = {
         "multiple": False,
