@@ -39,10 +39,15 @@ class UniqueElementList(list):
         #针对parent_element的html，生成uniqueness_id
         elif self.uniqueness_type == "unique_html":
             pq_object = pq(parent_element)
-            html = pq_object.eq(0).copy()
+            html = pq_object.copy()
 
-            def __remove_text_node(pq_element):
-                pq_element.contents().filter(lambda i: i.nodeType == 3).remove()
+            def _recursive_remove_text(pq_html):
+                a = pq_html.contents()
+                a.filter(lambda x: True if x.nodeType == 3 else _recursive_remove_text(x)).remove()
+
+            _recursive_remove_text(pq_object)
+
+            print(pq_object.html())
             element_id = get_md5(html)
 
             return element_id

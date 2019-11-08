@@ -10,22 +10,37 @@ from selenium.webdriver.common.by import By
 from WebScraper.Utils import setInterval
 import threading
 import time
+from WebScraper.Utils import get_md5
 start_time = time.time()
-
-
+from WebScraper.UniqueElementList import UniqueElementList
+from pyquery import PyQuery as pq
 def action(echo):
     print("{}action ! -> time: {:.1f}s".format(echo, time.time() - start_time))
 
 
 if __name__ == '__main__':
     #测试setInterval的多线程实现
+    #
+    # inter = setInterval(0.5, action, "你可长点心把 ")
+    # print('just after setInterval -> time : {:.1f}s'.format(time.time() - start_time))
+    #
+    # t = threading.Timer(5, inter.cancel)
+    # t.start()
+    div_str = """<div class="container">
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed 
+  do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  <br /><br />
+  Ut enim ad minim veniam, quis nostrud exercitation ullamco 
+  laboris nisi ut aliquip ex ea commodo consequat.
+  <div>lalalalalaal</div>
+  <br /> <br />
+  Duis aute irure dolor in reprehenderit in voluptate velit 
+  esse cillum dolore eu fugiat nulla pariatur.
+</div>"""
 
-    inter = setInterval(0.5, action, "你可长点心把 ")
-    print('just after setInterval -> time : {:.1f}s'.format(time.time() - start_time))
+    uq = UniqueElementList("unique_html")
 
-    t = threading.Timer(5, inter.cancel)
-    t.start()
-    pass
+    uq.get_uniqueness_id(pq(div_str))
     # os.environ["PATH"] += ":" + os.path.abspath("./webdriver")
     #
     # options = Options()
