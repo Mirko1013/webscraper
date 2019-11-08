@@ -41,9 +41,13 @@ class UniqueElementList(list):
             pq_object = pq(parent_element)
             html = pq_object.copy()
 
+            def callback_func(this):
+                if this.nodeType != 3:
+                    _recursive_remove_text(this)
+                return this.nodeType == 3
+
             def _recursive_remove_text(pq_html):
-                a = pq_html.contents()
-                a.filter(lambda x: True if x.nodeType == 3 else _recursive_remove_text(x)).remove()
+                a = pq_html.contents().filter(lambda this: pq(this).).remove()
 
             _recursive_remove_text(pq_object)
 
