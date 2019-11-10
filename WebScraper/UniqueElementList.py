@@ -7,7 +7,7 @@
 
 from pyquery import PyQuery as pq
 from WebScraper.Utils import get_md5
-
+from lxml.etree import _ElementUnicodeResult
 
 class UniquenessTypeNotImplementedError(Exception):
     pass
@@ -41,14 +41,20 @@ class UniqueElementList(list):
             pq_object = pq(parent_element)
             html = pq_object.copy()
 
-            def callback_func(this):
-                if this.nodeType != 3:
-                    _recursive_remove_text(this)
-                return this.nodeType == 3
+            def callback_func(i, this):
+                if not isinstance(this, _ElementUnicodeResult):
+                    _recursive_remove_text(pq(this))
+                return isinstance(this, _ElementUnicodeResult)
 
             def _recursive_remove_text(pq_html):
-                a = pq_html.contents().filter(lambda this: pq(this).).remove()
+                a = pq_html.contents()
+                b = a.filter(lambda i, this: not isinstance(this, _ElementUnicodeResult) )
 
+                print(b.html())
+                c = b.remove()
+                d = c.contents()
+
+                #print(d.text())
             _recursive_remove_text(pq_object)
 
             print(pq_object.html())

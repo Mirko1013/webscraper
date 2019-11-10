@@ -31,12 +31,10 @@ if __name__ == '__main__':
   do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
   <br /><br />
   Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-  laboris nisi ut aliquip ex ea commodo consequat.
-  <div>lalalalalaal</div>
-  <br /> <br />
+  laboris nisi ut aliquip ex ea commodo consequat.<div>lalalalalaal</div>
+  <br /><br />
   Duis aute irure dolor in reprehenderit in voluptate velit 
-  esse cillum dolore eu fugiat nulla pariatur.
-</div>"""
+  esse cillum dolore eu fugiat nulla pariatur.</div>"""
 
     uq = UniqueElementList("unique_html")
 
