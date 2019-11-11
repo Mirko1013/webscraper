@@ -10,6 +10,7 @@ from WebScraper.selector.TextSelector import TextSelector
 from WebScraper.selector.LinkSelector import LinkSelector
 from WebScraper.selector.ElementSelector import ElementSelector
 from WebScraper.selector.AttributeSelector import AttributeSelector
+from WebScraper.selector.ClickSelector import ClickSelector
 
 import logging
 import json

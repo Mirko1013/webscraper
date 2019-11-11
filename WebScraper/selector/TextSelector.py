@@ -25,6 +25,7 @@ class TextSelector(Selector):
 
     def __init__(self, id, type, css_paths, parent_selectors, multiple, delay, regex, **kwargs):
         super(TextSelector, self).__init__(id, type, css_paths, parent_selectors)
+
         self.multiple = multiple
         self.delay = delay
         self.regex = regex

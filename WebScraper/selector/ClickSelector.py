@@ -5,7 +5,7 @@
 # @FileName: ClickSelector.py
 # @Software: PyCharm
 
-from . import RegisterSelectorType, Selector
+from . import Selector, RegisterSelectorType
 from WebScraper.action import ActionFactory
 from WebScraper.Utils import setInterval
 from pyquery import PyQuery as pq
@@ -28,11 +28,11 @@ class ClickSelector(Selector):
         "actions": None
     }
 
-    def __int__(self, id, type, css_paths, parent_selectors, multiple, delay, actions, **kwargs):
+    def __init__(self, id, type, css_paths, parent_selectors, multiple, delay, actions, **kwargs):
         super(ClickSelector, self).__init__(id, type, css_paths, parent_selectors)
 
         self.multiple = multiple
-        self.delay = delay
+        self.delay = 0 if delay == "" else delay
         self.actions = ActionFactory.create_action("ClickAction").from_settings(**actions)
 
 
@@ -40,15 +40,8 @@ class ClickSelector(Selector):
     def get_features(cls):
         base_features = Selector.get_features()
         base_features.update(cls.features)
-
         return base_features
 
-    # @classmethod
-    # def from_settings(cls, settings):
-    #     selector = super(ClickSelector, cls).from_settings(settings)
-    #     selector.actions = ActionFactory.gen_actions_chain(selector.actions)
-
-    #   return selector
 
     def will_return_multiple_records(self):
         return self.multiple and self.can_return_multiple_records
@@ -64,7 +57,7 @@ class ClickSelector(Selector):
 
     def get_click_elements(self, driver, job_url, parentElement):
         click_css_path = self.actions.protocol.get("click_path")
-        driver
+
 
     def get_specific_data(self, driver, job_url, parentElement):
         found_elements = UniqueElementList("unique_html_text")
@@ -83,11 +76,16 @@ class ClickSelector(Selector):
         if len(click_elements) == 0:
             return found_elements
 
+        time_step = float(self.delay)
+
         current_click_element = click_elements[0]
         current_click_element.click()
-        next_click_time = time.time() + self.delay
+        next_click_time = time.time() + time_step
 
         def action():
+            nonlocal next_click_time
+            nonlocal current_click_element
+            nonlocal time_step
             elements_to_click = list()
             for element in click_elements:
                 if not done_click_elements.is_added(element):
@@ -118,7 +116,7 @@ class ClickSelector(Selector):
                     done_click_elements.push(current_click_element)
 
                 current_click_element.click()
-                next_click_time = now + self.delay
+                next_click_time = time.time() + time_step
 
 
         inter = setInterval(0.5, action)

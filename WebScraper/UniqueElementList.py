@@ -80,7 +80,7 @@ class UniqueElementList(list):
         else:
             element_uniqueness_id = self.get_uniqueness_id(parent_element)
             self.existed_elements[element_uniqueness_id] = True
-            self.append(parent_element.copy())
+            self.append(parent_element)
             return True
 
 

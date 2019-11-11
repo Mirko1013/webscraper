@@ -120,8 +120,7 @@ class ClickAction(Action):
         super(ClickAction, self).__init__(protocol=protocol)
 
     def pre_check(self, protocol):
-        if not self.protocol.get("click_path", None):
-            raise NoSuchElementException
+        pass
 
 
     def get_click_elements(self, driver, url, *args, **kwargs):
@@ -162,8 +161,8 @@ class ClickAction(Action):
 
 
     @classmethod
-    def from_settings(cls, click_paths, click_uniqueness_type, click_type, discard_initial_elements):
-        return cls({"click_path": click_paths, "click_uniqueness_type": click_uniqueness_type, "click_type": click_type, "discard_initial_elements": discard_initial_elements})
+    def from_settings(cls, click_path, click_uniqueness_type, click_type, discard_initial_elements):
+        return cls({"click_path": click_path, "click_uniqueness_type": click_uniqueness_type, "click_type": click_type, "discard_initial_elements": discard_initial_elements})
 
 @RegisterActionType("CloseAction")
 class CloseAction(Action):
