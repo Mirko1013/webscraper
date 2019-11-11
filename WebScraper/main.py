@@ -28,15 +28,15 @@ if __name__ == '__main__':
     # t.start()
     div_str = """<div class="container">
   Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed 
-  do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+  do eiusmod tempor incidi<div class='test'>abc<div>a<div>abcd</div>bcd</div>d</div>dunt ut labore et dolore magna aliqua. 
   <br /><br />
   Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-  laboris nisi ut aliquip ex ea commodo consequat.<div>lalalalalaal</div>
+  laboris nisi ut aliquip ex ea commodo consequat.<div>lalalalalaal<div>abcd</div></div>
   <br /><br />
   Duis aute irure dolor in reprehenderit in voluptate velit 
   esse cillum dolore eu fugiat nulla pariatur.</div>"""
 
-    uq = UniqueElementList("unique_html")
+    uq = UniqueElementList("unique_text")
 
     uq.get_uniqueness_id(pq(div_str))
     # os.environ["PATH"] += ":" + os.path.abspath("./webdriver")

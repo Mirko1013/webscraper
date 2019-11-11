@@ -1,0 +1,65 @@
+{
+  "startUrl": "https://www.webscraper.io/test-sites/e-commerce/ajax/computers/tablets",
+  "selectors": [
+    {
+      "parent_selectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "pinglun",
+      "css_paths": "div.ratings p",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "_root"
+      ],
+      "type": "SelectorClick",
+      "multiple": true,
+      "id": "shangpin",
+      "css_paths": "div.thumbnail",
+      "actions": {
+        "click_path": "button.btn",
+        "click_uniqueness_type": "unique_html_text",
+        "click_type": "click_once",
+        "discard_initial_elements": false
+      },
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "shangpin"
+      ],
+      "type": "SelectorLink",
+      "multiple": false,
+      "id": "lianjie",
+      "css_paths": "a.title",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "price",
+      "css_paths": "h4.pull-right",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "jieshao",
+      "css_paths": "p.description",
+      "regex": "",
+      "delay": ""
+    }
+  ],
+  "_id": "testclick"
+}

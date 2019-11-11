@@ -9,7 +9,9 @@ from . import RegisterSelectorType, Selector
 from WebScraper.action import ActionFactory
 from WebScraper.Utils import setInterval
 from pyquery import PyQuery as pq
+from WebScraper.UniqueElementList import UniqueElementList
 
+import time
 
 @RegisterSelectorType("SelectorClick")
 class ClickSelector(Selector):
@@ -31,7 +33,7 @@ class ClickSelector(Selector):
 
         self.multiple = multiple
         self.delay = delay
-        self.actions = actions
+        self.actions = ActionFactory.create_action("ClickAction").from_settings(**actions)
 
 
     @classmethod
@@ -41,12 +43,12 @@ class ClickSelector(Selector):
 
         return base_features
 
-    @classmethod
-    def from_settings(cls, settings):
-        selector = super(ClickSelector, cls).from_settings(settings)
-        selector.actions = ActionFactory.gen_actions_chain(selector.actions)
+    # @classmethod
+    # def from_settings(cls, settings):
+    #     selector = super(ClickSelector, cls).from_settings(settings)
+    #     selector.actions = ActionFactory.gen_actions_chain(selector.actions)
 
-        return selector
+    #   return selector
 
     def will_return_multiple_records(self):
         return self.multiple and self.can_return_multiple_records
@@ -60,5 +62,65 @@ class ClickSelector(Selector):
     def will_return_local_childs(self):
         return self.can_have_local_child_selectors
 
-    def get_specific_data(self, driver, job_url, element):
-        pass
+    def get_click_elements(self, driver, job_url, parentElement):
+        click_css_path = self.actions.protocol.get("click_path")
+        driver
+
+    def get_specific_data(self, driver, job_url, parentElement):
+        found_elements = UniqueElementList("unique_html_text")
+        done_click_elements = UniqueElementList(self.actions.protocol.get("click_uniqueness_type"))
+        #拿到需要进行点击的元素
+        click_elements = self.actions.get_click_elements(driver, job_url)
+
+
+        initial_elements = self.get_data_elements(driver, job_url, parentElement)
+        for element in initial_elements:
+            found_elements.push(element)
+
+        if self.actions.protocol.get("discard_initial_elements"):
+            found_elements = UniqueElementList("unique_text")
+
+        if len(click_elements) == 0:
+            return found_elements
+
+        current_click_element = click_elements[0]
+        current_click_element.click()
+        next_click_time = time.time() + self.delay
+
+        def action():
+            elements_to_click = list()
+            for element in click_elements:
+                if not done_click_elements.is_added(element):
+                    elements_to_click.append(element)
+
+            now = time.time()
+
+            if time < next_click_time:
+                return
+
+            data_elements = self.get_data_elements(driver, job_url, parentElement)
+
+            add_some_element = False
+            for item in data_elements:
+                added = found_elements.push(item)
+                if added:
+                    add_some_element = True
+
+            if not add_some_element:
+                done_click_elements.push(current_click_element)
+
+            if len(click_elements) == 0:
+                inter.cancel()
+                return found_elements
+            else:
+                current_click_element = click_elements[0]
+                if (self.actions.protocol.get("click_type")):
+                    done_click_elements.push(current_click_element)
+
+                current_click_element.click()
+                next_click_time = now + self.delay
+
+
+        inter = setInterval(0.5, action)
+
+        return found_elements

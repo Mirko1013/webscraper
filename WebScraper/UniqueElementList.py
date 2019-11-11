@@ -32,33 +32,38 @@ class UniqueElementList(list):
         #针对parent_element的html和text，生成uniqueness_id
         elif self.uniqueness_type =="unique_html_text":
             pq_object = pq(parent_element)
-            html_text = pq_object.eq(0).copy().html()
-            element_id = get_md5(html_text)
+
+            element_html = pq("<div class='-scraper-element-wrapper'></div>").append(pq_object.eq(0).clone()).html()
+
+            element_id = get_md5(element_html)
 
             return element_id
         #针对parent_element的html，生成uniqueness_id
         elif self.uniqueness_type == "unique_html":
             pq_object = pq(parent_element)
-            html = pq_object.copy()
 
-            def callback_func(i, this):
-                if not isinstance(this, _ElementUnicodeResult):
-                    _recursive_remove_text(pq(this))
-                return isinstance(this, _ElementUnicodeResult)
+            #去除掉父节点下的所有文本？？？
+            if pq_object[0].text:
+                pq_object[0].text = None
+            if pq_object[0].tail:
+                pq_object[0].tail = None
 
-            def _recursive_remove_text(pq_html):
-                a = pq_html.contents()
-                b = a.filter(lambda i, this: not isinstance(this, _ElementUnicodeResult) )
+            def _recursive_del_text(pq_object):
+                element_node_lists = pq_object.contents().filter(lambda i, this: not isinstance(this, _ElementUnicodeResult))
+                #TODO 无奈之举，没有了解tail和text的具体构造方式，粗暴赋空值实现去除所有text node的目的，可能会有bug
+                for node in element_node_lists:
+                    if node.tail:
+                        node.tail = None
+                    if node.text:
+                        node.text = None
 
-                print(b.html())
-                c = b.remove()
-                d = c.contents()
+                    _recursive_del_text(pq(node))
 
-                #print(d.text())
-            _recursive_remove_text(pq_object)
+                return element_node_lists
 
-            print(pq_object.html())
-            element_id = get_md5(html)
+            _recursive_del_text(pq_object)
+            element_html = pq("<div class='-scraper-element-wrapper'></div>").append(pq_object).html()
+            element_id = get_md5(element_html)
 
             return element_id
         #针对parent_element的css_selector，生成uniquness_id

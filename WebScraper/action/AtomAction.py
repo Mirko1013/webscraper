@@ -124,6 +124,12 @@ class ClickAction(Action):
             raise NoSuchElementException
 
 
+    def get_click_elements(self, driver, url, *args, **kwargs):
+        click_path = self.protocol.get("click_path")
+        click_elements = driver.find_elements(By.CSS_SELECTOR, click_path)
+
+        return click_elements
+
     def do(self, driver, url, *args, **kwargs):
         click_path = self.protocol.get("click_path")
 
@@ -156,8 +162,8 @@ class ClickAction(Action):
 
 
     @classmethod
-    def from_settings(cls, click_paths):
-        return cls({"click_path": click_paths})
+    def from_settings(cls, click_paths, click_uniqueness_type, click_type, discard_initial_elements):
+        return cls({"click_path": click_paths, "click_uniqueness_type": click_uniqueness_type, "click_type": click_type, "discard_initial_elements": discard_initial_elements})
 
 @RegisterActionType("CloseAction")
 class CloseAction(Action):
