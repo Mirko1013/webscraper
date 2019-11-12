@@ -174,7 +174,7 @@ class Selector(object):
         driver.switch_to_window(data_handle)
 
         #TODO 考虑在未来加入延时，控制selector的抽取速度
-        return self.get_specific_data(driver ,job_url, parentElement)
+        return self.get_specific_data(browser ,job_url, parentElement)
 
 
 

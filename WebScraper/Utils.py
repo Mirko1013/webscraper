@@ -32,9 +32,13 @@ class setInterval(object):
     def __init__(self, interval, func, *args, **kwargs):
         self.interval = interval
         self.func = func
-        self.stopEvent = threading.Event()
-        thread = threading.Thread(target=self.__task_func, args=args, kwargs=kwargs)
+        self.stop_event = threading.Event()
+        #传入stop_event，适配于闭包函数
+        thread = threading.Thread(target=self.__task_func, args=(self.stop_event, *args), kwargs=kwargs)
         thread.start()
+
+        #使主线程进入阻塞
+        thread.join()
 
 
     def __task_func(self, *args, **kwargs):
@@ -45,11 +49,12 @@ class setInterval(object):
         :param kwargs:
         :return:
         """
+
         next_time = time.time() + self.interval
-        while not self.stopEvent.wait(next_time - time.time()):
+        while not self.stop_event.wait(next_time - time.time()):
             next_time += self.interval
             self.func(*args, **kwargs)
 
     def cancel(self):
-        self.stopEvent.set()
+        self.stop_event.set()
 
