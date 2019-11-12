@@ -8,6 +8,7 @@
 from WebScraper.Job import Job
 from WebScraper.TQueue import TaskQueue
 from WebScraper.ChromeBrowser import ChromeBrowser
+from WebScraper.action import ActionFactory
 
 import logging
 
@@ -88,9 +89,8 @@ class Scraper(object):
                     del record["_followSelectorId"]
                 self.results_writer.append(record)
 
-
-
-
+        #close_action = ActionFactory.create_action("CloseAction").from_settings("NULL")
+        #close_action.do(self.browser, job.url)
         #TODO 对job返回的数据进行处理，同时递归调用_run()
 
         self._run()

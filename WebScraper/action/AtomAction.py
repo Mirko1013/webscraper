@@ -167,13 +167,19 @@ class ClickAction(Action):
 @RegisterActionType("CloseAction")
 class CloseAction(Action):
 
-    def __init__(self):
-        pass
+    def __init__(self, protocol):
+        super(CloseAction, self).__init__(protocol=protocol)
 
     def pre_check(self, protocol):
         pass
 
-    def do(self, **kwargs):
-        pass
+    def do(self, browser, url, **kwargs):
+        driver = browser.driver
+        data_handle = browser.get_urm_handle(url)
+        driver.switch_to_window(data_handle)
+        driver.close()
 
+    @classmethod
+    def from_settings(cls, dummy):
+        return cls({"dummy": dummy})
 

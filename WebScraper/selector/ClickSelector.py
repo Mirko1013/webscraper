@@ -125,7 +125,7 @@ class ClickSelector(Selector):
                 return found_elements
             else:
                 current_click_element = elements_to_click[0]
-                print(current_click_element.get_attribute("outerHTML"))
+                #print(current_click_element.get_attribute("outerHTML"))
                 if (self.actions.protocol.get("click_type") == "click_once"):
                     done_click_elements.push(current_click_element.get_attribute("outerHTML"))
 
