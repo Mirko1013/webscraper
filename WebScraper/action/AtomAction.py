@@ -7,11 +7,11 @@
 
 from . import RegisterActionType, Action
 
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support.expected_conditions import *
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotVisibleException
 from WebScraper.JsUtils import WINDOW_OPEN
+from WebScraper.action.CustomConditions import *
 
 import logging
 
@@ -90,7 +90,8 @@ class WaitAction(Action):
         protocol["condition"] = condition
         protocol["timeout"] = self.MAX_WAIT_TIME if timeout > self.MAX_WAIT_TIME else timeout
 
-    def do(self, driver, url, *args, **kwargs):
+    def do(self, browser, url, *args, **kwargs):
+        driver = browser.driver
 
         condition = self.protocol.get("condition")
         timeout = self.protocol.get("timeout")
@@ -106,8 +107,8 @@ class WaitAction(Action):
             WebDriverWait(driver, timeout).until(lambda _: False)
 
     @classmethod
-    def from_settings(cls, conditions, timeout):
-        return cls({"conditions": conditions, "timeout": timeout})
+    def from_settings(cls, condition, timeout):
+        return cls({"condition": condition, "timeout": timeout})
 
 
 

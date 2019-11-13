@@ -11,6 +11,7 @@ from WebScraper.JsUtils import *
 from WebScraper.DataExtractor import DataExtractor
 from WebScraper.action import ActionFactory
 from WebScraper.action.AtomAction import *
+from selenium.webdriver.support.ui import WebDriverWait
 
 from lxml import etree
 from lxml.cssselect import CSSSelector
@@ -24,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 class ChromeBrowser(object):
 
+    #单例模式锁
     _instance_lock = threading.Lock()
 
     def __init__(self, path, options, **kwargs):
@@ -96,21 +98,20 @@ class ChromeBrowser(object):
 
 
     def fetchData(self, url, sitemap, parentSelectorId):
+        #打开页面
+        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=True).do(self)
 
-        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=True)
-        open_action.do(self)
-        #self.loadUrl(url=url)
-        #对当前请求进行封装
-        #response = etree.HTML(self.browser.page_source)
+        #等待页面元素加载完成，默认轮询document的readyState，["complete", "interactive"]
+        #loading / 正在加载，表示 document 仍在加载。
+        #interactive / 可交互，文档已被解析，"正在加载"状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。
+        #complete / 完成，文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
+        page_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded(None)", timeout=30).do(self, None)
 
+        #解耦合，灵活等待，避开使用driver.page_source属性来获取网页的html元素
+        parent_element = pq(self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML"))
 
-        #print(etree.tostring(response))
-        #response = etree.parse(self.browser.page_source, etree.HTMLParser())
-
-        parentElement = pq(self.driver.page_source)
-
-
-        dataExtractor = DataExtractor(self, url, sitemap, parentSelectorId, parentElement("html")[0])
+        #进入数据抽取逻辑
+        dataExtractor = DataExtractor(self, url, sitemap, parentSelectorId, parent_element)
         results = dataExtractor.getData()
 
         return results

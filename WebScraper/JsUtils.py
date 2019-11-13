@@ -5,8 +5,9 @@
 # @FileName: JsUtils.py
 # @Software: PyCharm
 
-
 WINDOW_OPEN = "window.open(\"{0}\", \"{1}\")"
+
+DOCUMENT_STATUS ="return document.readyState"
 
 GET_ITEM_CSS_PATH = "var el = arguments[0]; function(el){"+ \
                     "if (!(el isinstanceof Element)) return;" + \
