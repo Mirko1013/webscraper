@@ -33,7 +33,7 @@ class ChromeBrowser(object):
         self.options = self.chrome_options(options)
         self.rainbow= dict()
         dc = DesiredCapabilities.CHROME
-        dc["pageLoadStrategy"]="none"
+        dc["pageLoadStrategy"] = "eager"
         self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options, desired_capabilities=dc)
 
         assert len(self.driver.window_handles) == 1
