@@ -12,6 +12,7 @@ from WebScraper.DataExtractor import DataExtractor
 from WebScraper.action import ActionFactory
 from WebScraper.action.AtomAction import *
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from lxml import etree
 from lxml.cssselect import CSSSelector
@@ -31,7 +32,9 @@ class ChromeBrowser(object):
     def __init__(self, path, options, **kwargs):
         self.options = self.chrome_options(options)
         self.rainbow= dict()
-        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
+        dc = DesiredCapabilities.CHROME
+        dc["pageLoadStrategy"]="none"
+        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options, desired_capabilities=dc)
 
         assert len(self.driver.window_handles) == 1
         self.update_urm_handle(self.driver.current_url, self.driver.current_window_handle)
