@@ -26,22 +26,23 @@ logger = logging.getLogger(__name__)
 
 class ChromeBrowser(object):
 
-    #单例模式锁
+    #单例锁
     _instance_lock = threading.Lock()
 
-    def __init__(self, path, options, **kwargs):
-        self.options = self.chrome_options(options)
+    def __init__(self, path, options, desired_capabilities, **kwargs):
+        self.options = self.chrome_options(options, desired_capabilities)
         self.rainbow= dict()
-        dc = DesiredCapabilities.CHROME
-        dc["pageLoadStrategy"] = "eager"
-        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options, desired_capabilities=dc)
+        self.driver = webdriver.Chrome(executable_path=path, chrome_options=self.options)
+
+        #设置页面加载超时，默认60s，用以防止极端情况下，driver陷入无限等待
+        self.driver.set_page_load_timeout(60)
 
         assert len(self.driver.window_handles) == 1
         self.update_urm_handle(self.driver.current_url, self.driver.current_window_handle)
 
-    def chrome_options(self, options):
+    def chrome_options(self, options, desired_capabilities):
         default_options = Options()
-
+        #TODO 此处用户配置和默认配置处理的有问题，后期完善，先凑合
         for option in options:
             default_options.add_argument(option)
 
@@ -58,7 +59,22 @@ class ChromeBrowser(object):
         default_options.add_argument('blink-settings=imageEnabled=false')
         default_options.add_argument('--disable-plugins')
 
+
+        #desired_capabilities和options的主要区别在于前者自定义，后者封装更为可读
+        #desired_capabilities = DesiredCapabilities.CHROME
+
+        for key, value in desired_capabilities.items():
+            default_options.capabilities[key] = value
+
+        #开启默认配置，更改当前web driver的pageLoadStrategy为eager
+        #Keyword	Page load strategy state	Document readiness state(document.readyState)
+        #"none"	            none	                    无对应
+        #"eager"	        eager	                "interactive"
+        #"normal"	        normal	                  "complete"
+        default_options.capabilities["pageLoadStrategy"] = "eager"
+
         return default_options
+
 
     def quit(self):
         self.driver.quit()
@@ -109,6 +125,9 @@ class ChromeBrowser(object):
         #interactive / 可交互，文档已被解析，"正在加载"状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。
         #complete / 完成，文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
         page_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded(None)", timeout=30).do(self, None)
+
+        ajax_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30).do(self, None)
+
 
         #解耦合，灵活等待，避开使用driver.page_source属性来获取网页的html元素
         parent_element = pq(self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML"))

@@ -9,6 +9,8 @@ WINDOW_OPEN = "window.open(\"{0}\", \"{1}\")"
 
 DOCUMENT_STATUS ="return document.readyState"
 
+JQUERY_AJAX_STATUS = "return window.jQuery != undefined && jQuery.active == 0"
+
 GET_ITEM_CSS_PATH = "var el = arguments[0]; function(el){"+ \
                     "if (!(el isinstanceof Element)) return;" + \
                             "var path=[]; "+ \

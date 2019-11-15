@@ -58,6 +58,8 @@ class ClickSelector(Selector):
     def get_click_elements(self, driver, job_url, parentElement):
         click_css_path = self.actions.protocol.get("click_path")
 
+    def get_item_css_path(self):
+        pass
 
     def get_specific_data(self, browser, job_url, parentElement):
         driver = browser.driver
@@ -134,6 +136,5 @@ class ClickSelector(Selector):
 
 
         inter = setInterval(1, action)
-
 
         return found_elements

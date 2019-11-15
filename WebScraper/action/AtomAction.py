@@ -56,9 +56,11 @@ class OpenAction(Action):
             #更新browser中urm的映射关系
             browser.update_urm_handle(url, driver.window_handles[-1])
             #driver.switch_to_window(driver.window_handles[-1])
-        except Exception:
-            #TODO 捕获打开异常
-            pass
+        except TimeoutError as e:
+            logger.info("Selenium failed to open the url, caused by:{}".format(e))
+
+            #网络状况不允许在默认60s完成基本html content的加载，直接停止Job执行，关闭driver
+            browser.quit()
 
     @classmethod
     def from_settings(cls, url, in_new_tab):

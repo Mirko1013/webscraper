@@ -9,8 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 
-from WebScraper.JsUtils import DOCUMENT_STATUS
-
+from WebScraper.JsUtils import DOCUMENT_STATUS, JQUERY_AJAX_STATUS
 import re
 
 class page_loaded(object):
@@ -27,6 +26,25 @@ class page_loaded(object):
 
     def __call__(self, driver, *args, **kwargs):
         status = driver.execute_script(DOCUMENT_STATUS)
-        print(status, type(status))
+        print("Wait for page load completed, current status is --> {}".format(status))
 
         return True if status in self.re_exp else False
+
+
+class ajax_loaded_complete(object):
+    """现阶段仅支持用jquery实现的ajax等待"""
+    def __init__(self, type):
+        """
+        传入ajax请求的实现方法，如jQuery、AngularJS等
+        :param type:
+        """
+        #TODO ajax请求类型，后续需要对此进行补充
+        self.type = type
+
+    def __call__(self, driver, *args, **kwargs):
+        if self.type == "jQuery":
+            status = driver.execute_script(JQUERY_AJAX_STATUS)
+            print("Wait for ajax response completed, current status is --> {}".format(status))
+            return True if status else False
+        else:
+            return True
