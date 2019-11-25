@@ -13,52 +13,34 @@ JQUERY_AJAX_STATUS = "return window.jQuery != undefined && jQuery.active == 0"
 
 GET_ITEM_CSS_PATH = """
                         var el = arguments[0];
-                        function getDomPath(el) {
-                          var stack = [];
-                          while ( el.parentNode != null ) {
-                            console.log(el.nodeName);
-                            var sibCount = 0;
-                            var sibIndex = 0;
-                            for ( var i = 0; i < el.parentNode.childNodes.length; i++ ) {
-                              var sib = el.parentNode.childNodes[i];
-                              if ( sib.nodeName == el.nodeName ) {
-                                if ( sib === el ) {
-                                  sibIndex = sibCount;
-                                }
-                                sibCount++;
+                        var cssPath = function(el){
+                          var names = [];
+                          while (el.parentNode){
+                            if (el.id){
+                              names.unshift('#'+el.id);
+                              break;
+                            }else{
+                              if (el==el.ownerDocument.documentElement) {
+                                names.unshift(el.tagName.toLocaleLowerCase());                              
                               }
+                              else{
+                                for (var c=1,e=el;e.previousElementSibling;e=e.previousElementSibling,c++);
+                                names.unshift(el.tagName.toLocaleLowerCase()+":nth-child("+c+")");
+                              }
+                              el=el.parentNode;
                             }
-                            if ( el.hasAttribute('id') && el.id != '' ) {
-                              stack.unshift(el.nodeName.toLowerCase() + '#' + el.id);
-                            } else if ( sibCount > 1 ) {
-                              stack.unshift(el.nodeName.toLowerCase() + ':eq(' + sibIndex + ')');
-                            } else {
-                              stack.unshift(el.nodeName.toLowerCase());
-                            }
-                            el = el.parentNode;
                           }
-                        
-                          return stack.slice(1); // removes the html element
+                          return names.join(" > ");
                         }
-                        return getDomPath(el).join(' > ');
-"""
+                        return cssPath(el)
+                    """
 
-# "var el = arguments[0]; var cssPath = function(el){"  +
-#                     "if (!(el isinstanceof Element)) return;" +
-#                             "var path=[]; " +
-#                             "while (el.nodeType === Node.ELEMENT_NODE) {" \
-#                                 "var selector = el.nodeName.toLowerCase();"\
-#                                 "if(el.id) {" +\
-#                                     "selector += \'#\' + el.id;" +\
-#                                 "}else{" +\
-#                                     "var sib = el, nth = 1;" +\
-#                                     "whild (sib.nodeType === Node.ELEMENT_NODE && (sib = sib.perviousSibling) && nth++);" +\
-#                                     "selector += \":nth-child(\"+nth+\")\";" +\
-#                                 "}" +\
-#                                 "path.unshif(selector);" +\
-#                                 "el = el.parentNode;" +\
-#                             "}" +\
-#                             "return path.join(\" > \");" +\
-#                     "};"
+TRIGGER_BUTTON_CLICK = """
+                        (function(){ 
+                            var el = document.querySelectorAll('"+{cssSelector}+"')[0]; 
+                            el.click(); 
+                        })();
+                       """
+
 
 CLICK_ELEMENT = "var el = document.querySelectorAll(\'{css_selector}\')[0]; el.click();"

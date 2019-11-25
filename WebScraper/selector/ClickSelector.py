@@ -77,8 +77,11 @@ class ClickSelector(Selector):
 
         for element in click_elements:
             click_css_path =  driver.execute_script(GET_ITEM_CSS_PATH, element)
-            print(pq(driver.find_element(By.CSS_SELECTOR, click_css_path)).text())
+
             print(click_css_path)
+
+            a = driver.find_element(By.CSS_SELECTOR, click_css_path)
+            print(a.text)
 
 
         initial_elements = self.get_data_elements(driver, job_url, parentElement)
