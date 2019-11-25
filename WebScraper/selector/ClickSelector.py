@@ -10,6 +10,10 @@ from WebScraper.action import ActionFactory
 from WebScraper.Utils import setInterval
 from pyquery import PyQuery as pq
 from WebScraper.UniqueElementList import UniqueElementList
+from WebScraper.JsUtils import GET_ITEM_CSS_PATH
+
+
+from selenium.webdriver.common.by import By
 
 import time
 
@@ -66,8 +70,15 @@ class ClickSelector(Selector):
 
         found_elements = UniqueElementList("unique_html_text")
         done_click_elements = UniqueElementList(self.actions.protocol.get("click_uniqueness_type"))
+
+
         #拿到需要进行点击的元素
         click_elements = self.actions.get_click_elements(driver, job_url)#此处为selenium的Web element对象
+
+        for element in click_elements:
+            click_css_path =  driver.execute_script(GET_ITEM_CSS_PATH, element)
+            print(pq(driver.find_element(By.CSS_SELECTOR, click_css_path)).text())
+            print(click_css_path)
 
 
         initial_elements = self.get_data_elements(driver, job_url, parentElement)
