@@ -130,7 +130,7 @@ class ChromeBrowser(object):
 
 
         #解耦合，灵活等待，避开使用driver.page_source属性来获取网页的html元素
-        parent_element = pq(self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML"))
+        parent_element = self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
 
         #进入数据抽取逻辑
         dataExtractor = DataExtractor(self, url, sitemap, parentSelectorId, parent_element)

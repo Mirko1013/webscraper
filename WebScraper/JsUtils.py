@@ -36,4 +36,9 @@ GET_ITEM_CSS_PATH = """
                     """
 
 
-TRIGGER_ELEMENT_CLICK = "var el = document.querySelectorAll(\'{css_selector}\')[0]; el.click();"
+TRIGGER_ELEMENT_CLICK = """
+                            var el = document.querySelectorAll(\'{css_selector}\')[0]; 
+                            console.log(el);
+                            el.click();
+                            console.log(document.querySelectorAll(\'div.thumbnail\'));
+                        """

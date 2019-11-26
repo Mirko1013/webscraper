@@ -46,7 +46,7 @@ class ElementSelector(Selector):
         return self.can_have_local_child_selectors
 
     def get_specific_data(self, driver, job_url, parentElement):
-        elements = self.get_data_elements(driver ,job_url, parentElement)
+        elements = self.get_data_elements(driver, job_url, parentElement)
 
         return list(elements)
 

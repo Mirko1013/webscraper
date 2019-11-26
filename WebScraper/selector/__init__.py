@@ -186,6 +186,7 @@ class Selector(object):
         else:
             return elements[:1] if elements else []
 
+
     def get_specific_data(self, driver, job_url, parentElement):
         raise NotImplementedError()
 

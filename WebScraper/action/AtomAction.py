@@ -167,8 +167,10 @@ class ClickAction(Action):
 
             current_click_element = self.waiting_elements.pop(0)
             #print("我点击了css path是{0}的元素".format(current_click_element))
+            print("剩余需要点击的元素数目为:{0}".format(len(self.waiting_elements)))
+
             driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
-            driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
+            #driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
 
             #click产生了新页面，不允许
             assert len(driver.window_handles) == orgin_handles

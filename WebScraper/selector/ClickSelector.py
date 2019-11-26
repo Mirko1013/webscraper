@@ -109,8 +109,8 @@ class ClickSelector(Selector):
 
             # 点击
             self.actions.do(browser, job_url)
-            print("==========================================done click=====================================")
-
+            print("==========================================begin click=====================================")
+            #time.sleep(10)
             parent_element = driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
             data_elements = self.get_data_elements(driver, job_url, parent_element)
 
@@ -119,7 +119,7 @@ class ClickSelector(Selector):
                 added = found_elements.push(item)
 
                 a = pq(item)
-                print("------>{0}<------\n".format(a.text()))
+                print("item为：------>{0}<------\n".format(a.text()))
 
                 if added:
                     add_some_element = True
@@ -131,7 +131,7 @@ class ClickSelector(Selector):
             else:
                 next_click_time = now + time_step
 
-        inter = setInterval(1, click_func)
+        inter = setInterval(6, click_func)
 
         return found_elements
 
