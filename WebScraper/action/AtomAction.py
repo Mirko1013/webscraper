@@ -5,13 +5,14 @@
 # @FileName: AtomAction.py
 # @Software: PyCharm
 
-from . import RegisterActionType, Action
+from . import RegisterActionType, Action, ActionFactory
 
 from selenium.webdriver.support.expected_conditions import *
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotVisibleException
 from WebScraper.JsUtils import WINDOW_OPEN
 from WebScraper.action.CustomConditions import *
+from WebScraper.JsUtils import TRIGGER_ELEMENT_CLICK, GET_ITEM_CSS_PATH
 
 import logging
 
@@ -127,40 +128,89 @@ class ClickAction(Action):
 
 
     def get_click_elements(self, driver, url, *args, **kwargs):
+        """
+        传入浏览器driver，根据协议中的click_path字段，返回全部可点击元素的css_path（唯一）
+        :param driver:
+        :param url:
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        result_css_path = list()
+
         click_path = self.protocol.get("click_path")
         click_elements = driver.find_elements(By.CSS_SELECTOR, click_path)
 
-        return click_elements
+        for single_click_element in click_elements:
+            cur_path = driver.execute_script(GET_ITEM_CSS_PATH, single_click_element)
+            result_css_path.append(cur_path)
 
-    def do(self, driver, url, *args, **kwargs):
-        click_path = self.protocol.get("click_path")
 
-        exist = True
+        if not hasattr(self, "waiting_elements"):
+            self.__setattr__("waiting_elements", result_css_path)
 
-        try:
-            click_element = driver.find_element(By.CSS_SELECTOR, click_path)
-        except NoSuchElementException:
-            #固定等待1s
-            wait = WaitAction.from_settings(None, 1)
-            wait.do(driver, url)
-            try:
-                click_element = driver.find_element(By.CSS_SELECTOR, click_path)
-            except NoSuchElementException:
-                exist = False
+        #return result_css_path
+        #return click_elements
+    def do(self, browser, url, *args, **kwargs):
+        driver = browser.driver
+
+        if not hasattr(self, "waiting_elements"):
+            raise AttributeError
 
         #拿到浏览器已打开的tab数量
-        orgin_handles = len(driver.windows_handles)
+        orgin_handles = len(driver.window_handles)
 
         try:
-            if exist:
-                click_element.click()
-        except ElementNotVisibleException:
-            #TODO 此处应该处理元素不可见的情况，或滚动，或等待
-            click_element.click()
+            #等待click event进入监听状态
+            wait_click = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded([\"complete\"])", timeout=30)
+            wait_click.do(browser, None)
 
-        #页面元素完成点击，进行下一步
-        if len(driver.windows_handles) > orgin_handles:
-            driver.switch_to_window(driver.windows_handles[-1])
+            current_click_element = self.waiting_elements.pop(0)
+            #print("我点击了css path是{0}的元素".format(current_click_element))
+            driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
+            driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
+
+            #click产生了新页面，不允许
+            assert len(driver.window_handles) == orgin_handles
+
+            #等待ajax返回
+            #print("-->click ajax等待判定")
+            wait_ajax = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30)
+            wait_ajax.do(browser, None)
+
+        except Exception:
+            pass
+
+
+    # def do(self, driver, url, *args, **kwargs):
+    #     click_path = self.protocol.get("click_path")
+    #
+    #     exist = True
+    #
+    #     try:
+    #         click_element = driver.find_element(By.CSS_SELECTOR, click_path)
+    #     except NoSuchElementException:
+    #         #固定等待1s
+    #         wait = WaitAction.from_settings(None, 1)
+    #         wait.do(driver, url)
+    #         try:
+    #             click_element = driver.find_element(By.CSS_SELECTOR, click_path)
+    #         except NoSuchElementException:
+    #             exist = False
+    #
+    #     #拿到浏览器已打开的tab数量
+    #     orgin_handles = len(driver.windows_handles)
+    #
+    #     try:
+    #         if exist:
+    #             click_element.click()
+    #     except ElementNotVisibleException:
+    #         #TODO 此处应该处理元素不可见的情况，或滚动，或等待
+    #         click_element.click()
+    #
+    #     #页面元素完成点击，进行下一步
+    #     if len(driver.windows_handles) > orgin_handles:
+    #         driver.switch_to_window(driver.windows_handles[-1])
 
 
     @classmethod

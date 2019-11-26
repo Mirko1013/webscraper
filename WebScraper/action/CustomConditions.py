@@ -16,7 +16,7 @@ class page_loaded(object):
     """根据传入的状态list，判断当前页面是否完成了加载"""
     def __init__(self, re_exp):
         """
-        根据传入的re_exp进行判断，如果为None或空字符串，则给状态数组赋默认值["complete", "loaded", "interactive"]
+        根据传入的re_exp进行判断，如果为None或空字符串，则给状态数组赋默认值["complete", "interactive"]
         :param re_exp:
         """
         if not re_exp or re_exp =="":
@@ -26,7 +26,7 @@ class page_loaded(object):
 
     def __call__(self, driver, *args, **kwargs):
         status = driver.execute_script(DOCUMENT_STATUS)
-        print("Wait for page load completed, current status is --> {}".format(status))
+        #print("Wait for page load completed, current status is --> {}".format(status))
 
         return True if status in self.re_exp else False
 
@@ -44,7 +44,7 @@ class ajax_loaded_complete(object):
     def __call__(self, driver, *args, **kwargs):
         if self.type == "jQuery":
             status = driver.execute_script(JQUERY_AJAX_STATUS)
-            print("Wait for ajax response completed, current status is --> {}".format(status))
+            #print("Wait for ajax response completed, current status is --> {}".format(status))
             return True if status else False
         else:
             return True

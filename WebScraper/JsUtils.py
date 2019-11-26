@@ -35,12 +35,5 @@ GET_ITEM_CSS_PATH = """
                         return cssPath(el)
                     """
 
-TRIGGER_BUTTON_CLICK = """
-                        (function(){ 
-                            var el = document.querySelectorAll('"+{cssSelector}+"')[0]; 
-                            el.click(); 
-                        })();
-                       """
 
-
-CLICK_ELEMENT = "var el = document.querySelectorAll(\'{css_selector}\')[0]; el.click();"
+TRIGGER_ELEMENT_CLICK = "var el = document.querySelectorAll(\'{css_selector}\')[0]; el.click();"
