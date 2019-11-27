@@ -107,10 +107,11 @@ class ClickSelector(Selector):
             data_handle = browser.get_urm_handle(job_url)
             driver.switch_to_window(data_handle)
 
+            print("==========================================begin click=====================================")
             # 点击
             self.actions.do(browser, job_url)
-            print("==========================================begin click=====================================")
-            #time.sleep(10)
+
+            #time.sleep(5)
             parent_element = driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
             data_elements = self.get_data_elements(driver, job_url, parent_element)
 
@@ -124,14 +125,14 @@ class ClickSelector(Selector):
                 if added:
                     add_some_element = True
 
-            print("新增元素:{0}".format(add_some_element))
+            # print("新增元素:{0}".format(add_some_element))
 
             if len(self.actions.waiting_elements) == 0:
                 stop_event.set()
             else:
                 next_click_time = now + time_step
 
-        inter = setInterval(6, click_func)
+        inter = setInterval(1, click_func)
 
         return found_elements
 

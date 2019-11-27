@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotVisibleException
 from WebScraper.JsUtils import WINDOW_OPEN
 from WebScraper.action.CustomConditions import *
-from WebScraper.JsUtils import TRIGGER_ELEMENT_CLICK, GET_ITEM_CSS_PATH
+from WebScraper.JsUtils import TRIGGER_ELEMENT_CLICK, GET_ITEM_CSS_PATH, LISTEN_ELEMENT_STATE
 
 import logging
 
@@ -149,6 +149,8 @@ class ClickAction(Action):
         if not hasattr(self, "waiting_elements"):
             self.__setattr__("waiting_elements", result_css_path)
 
+        #driver.execute_script(LISTEN_ELEMENT_STATE)
+
         #return result_css_path
         #return click_elements
     def do(self, browser, url, *args, **kwargs):
@@ -162,26 +164,31 @@ class ClickAction(Action):
 
         try:
             #等待click event进入监听状态
-            wait_click = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded([\"complete\"])", timeout=30)
-            wait_click.do(browser, None)
+            # wait_click = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded([\"complete\"])", timeout=30)
+            # wait_click.do(browser, None)
 
             current_click_element = self.waiting_elements.pop(0)
-            #print("我点击了css path是{0}的元素".format(current_click_element))
-            print("剩余需要点击的元素数目为:{0}".format(len(self.waiting_elements)))
 
-            driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
-            #driver.execute_script(TRIGGER_ELEMENT_CLICK.format(css_selector=current_click_element))
+            result = driver.execute_async_script(TRIGGER_ELEMENT_CLICK, current_click_element)
 
             #click产生了新页面，不允许
             assert len(driver.window_handles) == orgin_handles
 
+            # # 等待页面加载完成
+            # wait_click = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded([\"complete\"])", timeout=30)
+            # wait_click.do(browser, None)
             #等待ajax返回
             #print("-->click ajax等待判定")
-            wait_ajax = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30)
-            wait_ajax.do(browser, None)
+            # wait_ajax = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30)
+            # wait_ajax.do(browser, None)
+
+            # wait_ajax = ActionFactory.create_action("WaitAction").from_settings(
+            #     None, timeout=5)
+            # wait_ajax.do(browser, None)
 
         except Exception:
-            pass
+            import traceback
+            traceback.print_exc()
 
 
     # def do(self, driver, url, *args, **kwargs):
