@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from WebScraper.Sitemap import Sitemap
-from WebScraper.TQueue import TaskQueue
+from WebScraper.TaskQueue import TaskQueue
 from WebScraper.ChromeBrowser import ChromeBrowser
 from WebScraper.Scraper import Scraper
 
@@ -24,13 +24,7 @@ def main():
     browser = ChromeBrowser(path, list(), dict())
 
     scraper = Scraper(queue, sitemap, browser)
-    # a=sitemap.getSelectorById("_root")
-    # b=sitemap.getSelectorById("items")
-    # c=sitemap.getSelectorById("link")
-    # d=sitemap.getSelectorById("title")
-    # e=sitemap.getSelectorById("reviews")
-    # f=sitemap.getSelectorById("intro")
-    # print("lalal")
+
     data = scraper.run()
     print("圆满完成任务！")
 

@@ -125,9 +125,8 @@ class ChromeBrowser(object):
         #interactive / 可交互，文档已被解析，"正在加载"状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。
         #complete / 完成，文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
         page_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded(None)", timeout=30).do(self, None)
-
-        ajax_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30).do(self, None)
-
+        #wait_click = ActionFactory.create_action("WaitAction").from_settings(condition="page_loaded([\"complete\"])", timeout=10).do(self, None)
+        #ajax_loaded_action = ActionFactory.create_action("WaitAction").from_settings(condition="ajax_loaded_complete(\"jQuery\")", timeout=30).do(self, None)
 
         #解耦合，灵活等待，避开使用driver.page_source属性来获取网页的html元素
         parent_element = self.driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")

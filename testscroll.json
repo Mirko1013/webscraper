@@ -1,0 +1,70 @@
+{
+  "startUrl": "https://www.webscraper.io/test-sites/e-commerce/scroll/computers/laptops",
+  "selectors": [
+    {
+      "parentSelectors": [
+        "_root"
+      ],
+      "type": "SelectorElementScroll",
+      "multiple": true,
+      "id": "shanpin",
+      "selector": "div.thumbnail",
+      "delay": ""
+    },
+    {
+      "parentSelectors": [
+        "shanpin"
+      ],
+      "type": "SelectorLink",
+      "multiple": false,
+      "id": "lianjie",
+      "selector": "a.title",
+      "delay": ""
+    },
+    {
+      "parentSelectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "mingcheng",
+      "selector": "h4:nth-of-type(2)",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parentSelectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "jianjie",
+      "selector": "p.description",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parentSelectors": [
+        "lianjie"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "reviews",
+      "selector": "div.ratings p",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parentSelectors": [
+        "shanpin"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "jianqian",
+      "selector": "h4.pull-right",
+      "regex": "",
+      "delay": ""
+    }
+  ],
+  "_id": "testscroll"
+}

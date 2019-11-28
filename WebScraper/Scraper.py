@@ -6,7 +6,7 @@
 # @Software: PyCharm
 
 from WebScraper.Job import Job
-from WebScraper.TQueue import TaskQueue
+from WebScraper.TaskQueue import TaskQueue
 from WebScraper.ChromeBrowser import ChromeBrowser
 from WebScraper.action import ActionFactory
 
