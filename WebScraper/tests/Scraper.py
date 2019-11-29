@@ -17,7 +17,7 @@ def main():
     path= r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
     #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
 
-    with open("../../testclick.json", encoding="utf-8") as f:
+    with open("../../testscroll.json", encoding="utf-8") as f:
        json_sitemap = json.load(f)
     sitemap = Sitemap(json_sitemap.get("_id"), json_sitemap.get("startUrl"), json_sitemap.get("selectors"))
     queue = TaskQueue()

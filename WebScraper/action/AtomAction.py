@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import ElementNotVisibleException
 from WebScraper.JsUtils import WINDOW_OPEN
 from WebScraper.action.CustomConditions import *
-from WebScraper.JsUtils import TRIGGER_ELEMENT_CLICK, GET_ITEM_CSS_PATH
+from WebScraper.JsUtils import TRIGGER_ELEMENT_CLICK, GET_ITEM_CSS_PATH, SCROLL_TO_BOTTOM
 
 import logging
 
@@ -195,6 +195,33 @@ class ClickAction(Action):
     @classmethod
     def from_settings(cls, click_path, click_uniqueness_type, click_type, discard_initial_elements):
         return cls({"click_path": click_path, "click_uniqueness_type": click_uniqueness_type, "click_type": click_type, "discard_initial_elements": discard_initial_elements})
+
+
+@RegisterActionType("ScrollAction")
+class ScrollAction(Action):
+    """
+        协议如下:{"scroll_type":"N/integer"}
+    """
+    def __init__(self, protocol):
+        super(ScrollAction, self).__init__(protocol=protocol)
+
+    def pre_check(self, protocol):
+        pass
+
+    def do(self, browser, url,  **kwargs):
+        driver = browser.driver
+
+        try:
+            driver.execute_async_script(SCROLL_TO_BOTTOM)
+        except Exception:
+            import traceback
+            traceback.print_exc()
+
+
+    @classmethod
+    def from_settings(cls, scroll_type):
+        return cls({"scroll_type": scroll_type})
+
 
 @RegisterActionType("CloseAction")
 class CloseAction(Action):

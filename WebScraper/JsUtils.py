@@ -48,3 +48,26 @@ TRIGGER_ELEMENT_CLICK ="""
                             });  
                             el.click();          
                         """
+
+
+SCROLL_TO_BOTTOM = """
+                        const callback = arguments[arguments.length - 1]
+                        function scrollTo(offset, callback) {
+                            const onScroll = function () {
+                                if (window.pageYOffset === offset) {
+                                    window.removeEventListener('scroll', onScroll)
+                                    setTimeout(function(){callback(true);}, 200)
+                                    
+                                }
+                            }
+                            window.addEventListener('scroll', onScroll)
+                            onScroll()
+                            window.scrollTo({
+                                top: offset,
+                                behavior: 'smooth'
+                            })
+                        }
+                        scrollTo(document.body.scrollHeight, callback);
+                   """
+
+"""window.scrollTo(0, document.body.scrollHeight);"""

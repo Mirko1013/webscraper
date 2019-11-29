@@ -2,66 +2,67 @@
   "startUrl": "https://www.webscraper.io/test-sites/e-commerce/scroll/computers/laptops",
   "selectors": [
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "_root"
       ],
-      "type": "SelectorElementScroll",
+      "type": "SelectorScroll",
       "multiple": true,
       "id": "shanpin",
-      "selector": "div.thumbnail",
+      "css_paths": "div.thumbnail",
+      "scroll_type": "N",
       "delay": ""
     },
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "shanpin"
       ],
       "type": "SelectorLink",
       "multiple": false,
       "id": "lianjie",
-      "selector": "a.title",
+      "css_paths": "a.title",
       "delay": ""
     },
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "lianjie"
       ],
       "type": "SelectorText",
       "multiple": false,
       "id": "mingcheng",
-      "selector": "h4:nth-of-type(2)",
+      "css_paths": "h4:nth-of-type(2)",
       "regex": "",
       "delay": ""
     },
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "lianjie"
       ],
       "type": "SelectorText",
       "multiple": false,
       "id": "jianjie",
-      "selector": "p.description",
+      "css_paths": "p.description",
       "regex": "",
       "delay": ""
     },
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "lianjie"
       ],
       "type": "SelectorText",
       "multiple": false,
       "id": "reviews",
-      "selector": "div.ratings p",
+      "css_paths": "div.ratings p",
       "regex": "",
       "delay": ""
     },
     {
-      "parentSelectors": [
+      "parent_selectors": [
         "shanpin"
       ],
       "type": "SelectorText",
       "multiple": false,
       "id": "jianqian",
-      "selector": "h4.pull-right",
+      "css_paths": "h4.pull-right",
       "regex": "",
       "delay": ""
     }

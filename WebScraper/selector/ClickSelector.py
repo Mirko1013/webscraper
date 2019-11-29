@@ -10,7 +10,7 @@ from WebScraper.action import ActionFactory
 from WebScraper.Utils import setInterval
 from pyquery import PyQuery as pq
 from WebScraper.UniqueElementList import UniqueElementList
-from WebScraper.JsUtils import GET_ITEM_CSS_PATH, TRIGGER_ELEMENT_CLICK
+#from WebScraper.JsUtils import GET_ITEM_CSS_PATH, TRIGGER_ELEMENT_CLICK
 
 
 from selenium.webdriver.common.by import By
