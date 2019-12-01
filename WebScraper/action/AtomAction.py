@@ -212,7 +212,9 @@ class ScrollAction(Action):
         driver = browser.driver
 
         try:
-            driver.execute_async_script(SCROLL_TO_BOTTOM)
+
+            result = driver.execute_async_script(SCROLL_TO_BOTTOM)
+            print(result)
         except Exception:
             import traceback
             traceback.print_exc()

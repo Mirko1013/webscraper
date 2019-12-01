@@ -14,8 +14,8 @@ from WebScraper.Scraper import Scraper
 import json
 
 def main():
-    path= r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
-    #path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
+    #path= r"D:\PycharmProjects\baijia\WebScraper\chromedriver\chromedriver.exe"
+    path = r"/Users/mirko/PycharmProjects/baijia/WebScraper/chromedirver/chromedriver"
 
     with open("../../testscroll.json", encoding="utf-8") as f:
        json_sitemap = json.load(f)

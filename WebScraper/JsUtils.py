@@ -51,7 +51,23 @@ TRIGGER_ELEMENT_CLICK ="""
 
 
 SCROLL_TO_BOTTOM = """
+                        const callback = arguments[arguments.length -1];
+                        window.addEventListener('scroll', function(){
+                            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                            var clientHeight = document.body.clientHeight;
+                            var scrollHeight = document.body.scrollHeight;
+                            if (scrollTop + clientHeight == scrollHeight ){
+                                console.log("hit the bottom!");
+                                setTimeout(function(){callback(true);}, 200);
+                            }
+                        })
+                        
+                        window.scrollTo(0, document.body.scrollHeight);
+                   """
+
+"""
                         const callback = arguments[arguments.length - 1]
+                        
                         function scrollTo(offset, callback) {
                             const onScroll = function () {
                                 if (window.pageYOffset === offset) {
@@ -69,5 +85,12 @@ SCROLL_TO_BOTTOM = """
                         }
                         scrollTo(document.body.scrollHeight, callback);
                    """
+
+
+"""
+                        const callback = arguments[arguments.length - 1];
+                        window.scrollTo(0, document.body.scrollHeight);
+                        callback(true);
+                        """
 
 """window.scrollTo(0, document.body.scrollHeight);"""

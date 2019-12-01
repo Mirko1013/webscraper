@@ -36,6 +36,8 @@ class ChromeBrowser(object):
 
         #设置页面加载超时，默认60s，用以防止极端情况下，driver陷入无限等待
         self.driver.set_page_load_timeout(60)
+        self.driver.set_script_timeout(60)
+
 
         assert len(self.driver.window_handles) == 1
         self.update_urm_handle(self.driver.current_url, self.driver.current_window_handle)
