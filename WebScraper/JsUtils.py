@@ -53,44 +53,14 @@ TRIGGER_ELEMENT_CLICK ="""
 SCROLL_TO_BOTTOM = """
                         const callback = arguments[arguments.length -1];
                         window.addEventListener('scroll', function(){
-                            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-                            var clientHeight = document.body.clientHeight;
-                            var scrollHeight = document.body.scrollHeight;
-                            if (scrollTop + clientHeight == scrollHeight ){
+                        var pageHeight = Math.max(document.body.scrollHeight,document.body.offsetHeight);
+                        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+                        var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+                            if (pageHeight - viewportHeight - scrollTop < 20) {
                                 console.log("hit the bottom!");
                                 setTimeout(function(){callback(true);}, 200);
                             }
+                         
                         })
-                        
-                        window.scrollTo(0, document.body.scrollHeight);
+                        window.scrollTo(0, document.body.scrollHeight);              
                    """
-
-"""
-                        const callback = arguments[arguments.length - 1]
-                        
-                        function scrollTo(offset, callback) {
-                            const onScroll = function () {
-                                if (window.pageYOffset === offset) {
-                                    window.removeEventListener('scroll', onScroll)
-                                    setTimeout(function(){callback(true);}, 200)
-                                    
-                                }
-                            }
-                            window.addEventListener('scroll', onScroll)
-                            onScroll()
-                            window.scrollTo({
-                                top: offset,
-                                behavior: 'smooth'
-                            })
-                        }
-                        scrollTo(document.body.scrollHeight, callback);
-                   """
-
-
-"""
-                        const callback = arguments[arguments.length - 1];
-                        window.scrollTo(0, document.body.scrollHeight);
-                        callback(true);
-                        """
-
-"""window.scrollTo(0, document.body.scrollHeight);"""

@@ -120,7 +120,7 @@ class ChromeBrowser(object):
 
     def fetchData(self, url, sitemap, parentSelectorId):
         #打开页面
-        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=True).do(self)
+        open_action = ActionFactory.create_action("OpenAction").from_settings(url=url, in_new_tab=False).do(self)
 
         #等待页面元素加载完成，默认轮询document的readyState，["complete", "interactive"]
         #loading / 正在加载，表示 document 仍在加载。

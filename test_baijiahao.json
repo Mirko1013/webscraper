@@ -1,0 +1,94 @@
+{
+  "_id": "test_baijiahao",
+  "startUrl": "https://author.baidu.com/home/1625877293629981",
+  "selectors": [
+    {
+      "parent_selectors": [
+        "_root"
+      ],
+      "type": "SelectorScroll",
+      "multiple": true,
+      "id": "article-card",
+      "css_paths": "div.feed-item",
+      "delay": 3
+    },
+    {
+      "parent_selectors": [
+        "article-card"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "yuedu",
+      "css_paths": "span.sfi-article-span:nth-of-type(1)",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "article-card"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "pinglun",
+      "css_paths": "span.sfi-article-span:nth-of-type(2)",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "article-card"
+      ],
+      "type": "SelectorAttribute",
+      "multiple": false,
+      "id": "xiangqing",
+      "css_paths": ".sfi-article",
+      "extract_attribute": "url",
+      "create_new_jobs": true,
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "biaoti",
+      "css_paths": "div.article-title h2",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "date",
+      "css_paths": "span.date",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "time",
+      "css_paths": "span.time",
+      "regex": "",
+      "delay": ""
+    },
+    {
+      "parent_selectors": [
+        "xiangqing"
+      ],
+      "type": "SelectorText",
+      "multiple": false,
+      "id": "zhengwen",
+      "css_paths": "div.article",
+      "regex": "",
+      "delay": ""
+    }
+  ]
+}

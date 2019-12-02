@@ -4,3 +4,28 @@
 # @Author  : mirko
 # @FileName: DBmanager.py
 # @Software: PyCharm
+import pymongo
+
+
+class MongoDB(object):
+
+    def __init__(self):
+        pass
+
+
+
+class RedisDB(object):
+    def __init__(self):
+        pass
+
+
+class SQLiteDB(object):
+
+    def __init__(self):
+        pass
+
+
+class MysqlDB(object):
+
+    def __init__(self):
+        pass
