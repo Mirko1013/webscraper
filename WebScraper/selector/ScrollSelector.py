@@ -74,19 +74,19 @@ class ScrollSelector(Selector):
             if now < next_scroll_time:
                 return
 
-            # 切换至当前窗口
+            #切换至当前窗口
             data_handle = browser.get_urm_handle(job_url)
             driver.switch_to_window(data_handle)
 
-            # 点击
-            self.action.do(browser, job_url)
-
+            #卷动
+            scroll_percent = self.action.do(browser, job_url)
+            print("ScrollSelector滚动至百分比:{}".format(scroll_percent))
             parent_element = driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
             found_elements = self.get_data_elements(driver, job_url, parent_element)
 
             cur_len = len(found_elements)
 
-            if cur_len > pre_len:
+            if cur_len > pre_len or scroll_percent < 100:
                 pre_len = cur_len
                 next_scroll_time = now + time_step
             else:

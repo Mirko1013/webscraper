@@ -1,6 +1,9 @@
 {
   "_id": "test_baijiahao",
   "startUrl": "https://author.baidu.com/home/1625877293629981",
+  "a": "https://author.baidu.com/home/1568993579995180",
+
+
   "selectors": [
     {
       "parent_selectors": [
@@ -19,7 +22,7 @@
       "type": "SelectorText",
       "multiple": false,
       "id": "yuedu",
-      "css_paths": "span.sfi-article-span:nth-of-type(1)",
+      "css_paths": "span:nth-of-type(1)",
       "regex": "",
       "delay": ""
     },
@@ -30,7 +33,7 @@
       "type": "SelectorText",
       "multiple": false,
       "id": "pinglun",
-      "css_paths": "span.sfi-article-span:nth-of-type(2)",
+      "css_paths": "span:nth-of-type(2)",
       "regex": "",
       "delay": ""
     },

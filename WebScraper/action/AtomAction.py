@@ -211,12 +211,14 @@ class ScrollAction(Action):
     def do(self, browser, url,  **kwargs):
         driver = browser.driver
 
+        scroll_percent = 0
         try:
-            driver.execute_async_script(SCROLL_TO_BOTTOM)
-        except Exception:
+            scroll_percent = driver.execute_async_script(SCROLL_TO_BOTTOM)
+        except Exception as e:
             import traceback
             traceback.print_exc()
 
+        return scroll_percent
 
     @classmethod
     def from_settings(cls, scroll_type):

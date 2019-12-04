@@ -8,6 +8,7 @@
 
 import time, threading
 import hashlib
+from w3lib.url import canonicalize_url
 
 DICT_OR_SINGLE_VALUES = (dict, bytes)
 
@@ -24,7 +25,16 @@ def arg2iter(arguments):
 
 
 def get_md5(str):
-    return hashlib.md5(str.encode("utf-8")).hexdigest()
+    return hashlib.md5(to_bytes(str)).hexdigest()
+
+
+def to_bytes(str, encoding=None):
+    if isinstance(str, bytes):
+        return str
+    if not encoding:
+        encoding = "utf-8"
+
+    return str.encode(encoding)
 
 
 
@@ -58,3 +68,8 @@ class setInterval(object):
     def cancel(self):
         self.stop_event.set()
 
+def request_fingerprint(url):
+    fp = hashlib.sha1()
+    fp.update(to_bytes(canonicalize_url(url=url)))
+
+    return fp.hexdigest()
