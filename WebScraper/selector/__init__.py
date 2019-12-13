@@ -9,6 +9,7 @@
 from lxml.cssselect import CSSSelector
 from pyquery import PyQuery as pq
 
+
 class RegisterSelectorType(object):
 
     selector_type = {}

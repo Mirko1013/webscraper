@@ -16,9 +16,16 @@ from WebScraper.UniqueElementList import UniqueElementList
 from pyquery import PyQuery as pq
 def action(echo):
     print("{}action ! -> time: {:.1f}s".format(echo, time.time() - start_time))
-
+from WebScraper.processor.RegexProcessor import RegexProcessor
 
 if __name__ == '__main__':
+
+    import re
+    str = "发布时间：12-06"
+
+    pattern = re.compile("\\d{1,2}-\\d{1,2}")
+    lst = pattern.findall(str)
+    print(lst)
     #测试setInterval的多线程实现
     #
     # inter = setInterval(0.5, action, "你可长点心把 ")
@@ -26,19 +33,19 @@ if __name__ == '__main__':
     #
     # t = threading.Timer(5, inter.cancel)
     # t.start()
-    div_str = """<div class="container">
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed 
-  do eiusmod tempor incidi<div class='test'>abc<div>a<div>abcd</div>bcd</div>d</div>dunt ut labore et dolore magna aliqua. 
-  <br /><br />
-  Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-  laboris nisi ut aliquip ex ea commodo consequat.<div>lalalalalaal<div>abcd</div></div>
-  <br /><br />
-  Duis aute irure dolor in reprehenderit in voluptate velit 
-  esse cillum dolore eu fugiat nulla pariatur.</div>"""
-
-    uq = UniqueElementList("unique_text")
-
-    uq.get_uniqueness_id(pq(div_str))
+  #   div_str = """<div class="container">
+  # Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed
+  # do eiusmod tempor incidi<div class='test'>abc<div>a<div>abcd</div>bcd</div>d</div>dunt ut labore et dolore magna aliqua.
+  # <br /><br />
+  # Ut enim ad minim veniam, quis nostrud exercitation ullamco
+  # laboris nisi ut aliquip ex ea commodo consequat.<div>lalalalalaal<div>abcd</div></div>
+  # <br /><br />
+  # Duis aute irure dolor in reprehenderit in voluptate velit
+  # esse cillum dolore eu fugiat nulla pariatur.</div>"""
+  #
+  #   uq = UniqueElementList("unique_text")
+  #
+  #   uq.get_uniqueness_id(pq(div_str))
     # os.environ["PATH"] += ":" + os.path.abspath("./webdriver")
     #
     # options = Options()

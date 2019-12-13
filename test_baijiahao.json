@@ -13,7 +13,7 @@
       "multiple": true,
       "id": "article-card",
       "css_paths": "div.feed-item",
-      "delay": 3
+      "delay": 1
     },
     {
       "parent_selectors": [
@@ -68,7 +68,7 @@
       "multiple": false,
       "id": "date",
       "css_paths": "span.date",
-      "regex": "",
+      "regex": "\\d{1,2}-\\d{1,2}",
       "delay": ""
     },
     {

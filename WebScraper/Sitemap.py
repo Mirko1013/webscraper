@@ -13,6 +13,9 @@ from WebScraper.selector.AttributeSelector import AttributeSelector
 from WebScraper.selector.ClickSelector import ClickSelector
 from WebScraper.selector.ScrollSelector import ScrollSelector
 
+from WebScraper.processor.RegexProcessor import RegexProcessor
+
+
 import logging
 import json
 

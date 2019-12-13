@@ -8,6 +8,8 @@
 from . import RegisterSelectorType, Selector
 from pyquery import PyQuery as pq
 
+from WebScraper.processor import ProcessorFactory
+
 @RegisterSelectorType("SelectorText")
 class TextSelector(Selector):
 
@@ -29,6 +31,9 @@ class TextSelector(Selector):
         self.multiple = multiple
         self.delay = delay
         self.regex = regex
+
+        if self.regex and self.regex != "":
+            self.regex_processor = ProcessorFactory.create_processor("RegexProcessor").from_settings(self.regex)
 
     @classmethod
     def get_features(cls):
@@ -53,15 +58,25 @@ class TextSelector(Selector):
 
         resultData = list()
 
-        for element in elements:
-            data = dict()
-            text = pq(element).text()
-            data[self.id] = text
-            resultData.append(data)
+        try:
+            for element in elements:
+                data = dict()
+                text = pq(element).text()
+                if hasattr(self, "regex_processor"):
+                    text = self.regex_processor(text)
 
-        if not self.multiple and len(elements) == 0:
-            data = dict()
-            data[self.id] = None
-            resultData.append(data)
+                data[self.id] = text
+
+                resultData.append(data)
+
+            if not self.multiple and len(elements) == 0:
+                data = dict()
+                data[self.id] = None
+                resultData.append(data)
+
+        except Exception:
+            import traceback
+            traceback.print_exc()
+
 
         return resultData

@@ -80,7 +80,7 @@ class ScrollSelector(Selector):
 
             #卷动
             scroll_percent = self.action.do(browser, job_url)
-            print("ScrollSelector滚动至百分比:{}".format(scroll_percent))
+            print("---> ScrollSelector滚动至百分比:{}".format(scroll_percent))
             parent_element = driver.find_element(By.TAG_NAME, "html").get_attribute("outerHTML")
             found_elements = self.get_data_elements(driver, job_url, parent_element)
 

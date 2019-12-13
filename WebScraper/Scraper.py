@@ -19,10 +19,11 @@ logger = logging.getLogger(__name__)
 
 class Scraper(object):
 
-    def __init__(self, queue, sitemap, browser, *args, **kwargs):
+    def __init__(self, queue, sitemap, browser, post_process_hook=None, *args, **kwargs):
         self.queue = queue
         self.sitemap = sitemap
         self.browser = browser
+        self.post_process = post_process_hook
 
         self.results_writer = MongoDB(host="140.143.240.248", port=27017, username="zhouhuan", password="zh19620522", db="TEST")
         self.results_list = list()
@@ -93,6 +94,10 @@ class Scraper(object):
                 if "_follow" in record.keys():
                     del record["_follow"]
                     del record["_followSelectorId"]
+
+                #针对单一record的后处理hook func
+                if self.post_process:
+                    self.post_process(record)
 
                 self.results_list.append(record)
                 query = {'finger_print': record['finger_print']}
