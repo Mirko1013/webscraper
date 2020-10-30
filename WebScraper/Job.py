@@ -7,6 +7,7 @@
 
 import re
 
+
 class Job(object):
 
     def __init__(self, url, parentSelectorId, scraper, parentJob, baseData):

@@ -25,7 +25,8 @@ class Scraper(object):
         self.browser = browser
         self.post_process = post_process_hook
 
-        self.results_writer = MongoDB(host="140.143.240.248", port=27017, username="zhouhuan", password="zh19620522", db="TEST")
+        self.results_writer = None
+        #MongoDB(host="140.143.240.248", port=27017, username="zhouhuan", password="zh19620522", db="TEST")
         self.results_list = list()
         #TODO 数据库存放相关的句柄
 
@@ -102,7 +103,7 @@ class Scraper(object):
                 self.results_list.append(record)
                 query = {'finger_print': record['finger_print']}
                 doc = {'$set': record}
-                self.results_writer.insert_or_update(query, doc, collection="baijia")
+                #self.results_writer.insert_or_update(query, doc, collection="baijia")
         #close_action = ActionFactory.create_action("CloseAction").from_settings("NULL")
         #close_action.do(self.browser, job.url)
         #TODO 对job返回的数据进行处理，同时递归调用_run()

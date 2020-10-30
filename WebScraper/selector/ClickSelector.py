@@ -104,8 +104,8 @@ class ClickSelector(Selector):
                 return
 
             # 切换至当前窗口
-            data_handle = browser.get_urm_handle(job_url)
             driver.switch_to_window(data_handle)
+            data_handle = browser.get_urm_handle(job_url)
 
             # 点击
             self.actions.do(browser, job_url)
